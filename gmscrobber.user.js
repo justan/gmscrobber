@@ -193,7 +193,7 @@ var Scrobber = function(){
 			onerror: function(e){
 				unsafeWindow.alert(params.method + "failed");
 				log(params.method + " request failed.. " + JSON.stringify(e));
-			}微笑 舞起来  907778213
+			}
 		});
 	};
 	fn.paramsInit = function(params){
