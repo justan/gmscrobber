@@ -1,4 +1,4 @@
-﻿var log =  GM_log,//unsafeWindow.console.log,//
+﻿var log =  function(){},//GM_log,//unsafeWindow.console.log,//
 	getVal = GM_getValue,
 	setVal = GM_setValue,
 	delVal = GM_deleteValue,
@@ -12,31 +12,38 @@ var Scrobbler = function(){
 		secret = "cbc5528721f63b839720633d7c1258d2",
 		apiurl = "http://ws.audioscrobbler.com/2.0/",	
 		scrate = .9,
-		tokenreg = /[?&]token=(\w{32})/;
+		tokenreg = /[?&]token=(\w{32})/,
+		_timer, _shift;
 	// info.type 1: 手动调用scrobble记录歌曲; 0(缺省): 根据播放起始时间和持续时间自动记录歌曲
 	var fn = function(info){
 		this.type = info.type;
-		this.name = info && info.name || "";
+		this.name = info.name || "";
+		this.ready = info.ready || function(){};
 		this.init(this);
 	};
 	fn.prototype = {
 		init: function(that){
 			var sk = getVal("session"),
 				token = document.location.search.replace(tokenreg, "$1");
+			that = that || this;
 			
+			log(sk + "\n" + token + "\n" + document.location.href);
 			if(sk){
-				rmc("停止记录" + that.name);
+				rmc("停止记录" + that.name, that.delSession);
 				that.username = sk.split("/")[0];
 				that.sk = sk.split("/")[1];
+				setTimeout(function(){that.ready()}, 0);
 			}else if(token){
-				this.ajax({method:"auth.getSession", _sig:"", token: token},
+				that.sk = "wait";
+				that.ajax({method:"auth.getSession", _sig:"", token: token},
 					function(d){
-					//log(JSON.stringify(d))
+					log(JSON.stringify(d))
 						if(d.session && d.session.key){
 							that.sk = d.session.key;
 							that.username = d.session.name;
 							setVal("session",that.username + "/" + that.sk);
 							rmc("停止记录" + that.name, that.delSession);
+							that.ready();
 						}
 					}, true);
 			}else{
@@ -48,8 +55,8 @@ var Scrobbler = function(){
 			return this.sk;
 		},
 		delSession: function(){
-				delVal("session");
-				document.location = document.location.href.replace(tokenreg, "");
+			delVal("session");
+			document.location = document.location.href.replace(tokenreg, "");
 		},
 		
 	//song's command
@@ -59,6 +66,7 @@ var Scrobbler = function(){
 			this.timestamp = Math.floor(new Date().getTime()/1000);
 			this.song = song; //song: {title: "", artist: "", duration: "", album: ""}
 			//log(JSON.stringify(song));
+			log(song.title + " now playing");
 			this.ajax({
 				method: "track.updateNowPlaying", 
 				track: song.title,
@@ -68,11 +76,14 @@ var Scrobbler = function(){
 				_sig:""
 			},
 			function(d){
-				log(JSON.stringify(d));
+				//log(JSON.stringify(d));
 			},
 			true);
 			
-			this.type || setTimeout(function(){that.scrobble}, that.durtion * scrate);
+			if(!this.type){
+				clearTimeout(_timer);
+				_timer = setTimeout(function(){that.scrobble()}, that.song.duration * scrate *1000);
+			}
 		},
 		scrobble: function(song){
 			song = song || this.song;
@@ -116,7 +127,7 @@ var Scrobbler = function(){
 			},
 			true);
 		},
-		getInfo: function(song){
+		getInfo: function(song, callback){
 			var that = this;
 			song = song || this.song;
 			this.ajax({
@@ -128,32 +139,38 @@ var Scrobbler = function(){
 			},
 			function(d){
 				//log(JSON.stringify(d));
-				var n = d.track.userplaycount ? d.track.userplaycount : 0, t;
-				if(d.track.userloved == "1"){
-					t = "love";
-				}else if(d.track.userloved === "0"){
-					t = "unlove";
+				var n, t;
+				if(d.track){
+					n = d.track.userplaycount ? d.track.userplaycount : 0;
+					if(d.track.userloved == "1"){
+						t = "1";
+					}else if(d.track.userloved === "0"){
+						t = "0";
+					}
+				}else{
+					n = 0;
+					t = "0";
 				}
-				that.call({islove: d.track.userloved, len: n});
+				typeof callback == "function" && callback({islove: t, len: n});
 			},
 			true);
-		},
-		call: function(e){
-			
 		},
 		
 	//play control
 		play: function(){
-			this.state = "playing";
+			this.state = "play";
 		},
 		pause: function(){
-			this.state = "pausing";
+			//_timer && clearTimeout(_timer);
+			this.state = "pause";
 		},
 		buffer: function(){
-			this.state = "buffering";
+			//this.pause();
+			this.state = "buffer";
 		},
 		stop: function(){
-			this.state = "stopping";
+			_timer && clearTimeout(_timer);
+			this.state = "stop";
 		},
 		seek: function(offset){
 			
@@ -162,10 +179,10 @@ var Scrobbler = function(){
 		ajax: function(params, callback, auth){
 			if(this.sk){
 				params.sk = this.sk;
-				fn.ajax(params, callback, auth);
 			}else{
 				delete params.sk;
 			}
+			fn.ajax(params, callback, auth);
 		},
 	};
 	
