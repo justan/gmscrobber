@@ -1,4 +1,4 @@
-﻿var log =  function(){},//GM_log,//unsafeWindow.console.log,//
+﻿var log =  GM_log,//function(){},//unsafeWindow.console.log,//
 	getVal = GM_getValue,
 	setVal = GM_setValue,
 	delVal = GM_deleteValue,
@@ -251,6 +251,65 @@ var Scrobbler = function(){
 	};
 	return fn;
 }();
+
+var uso = {
+	metaParse: function(metadataBlock) {
+	  var headers = {};
+	  var line, name, prefix, header, key, value;
+
+		var lines = metadataBlock.split(/\n/).filter(/\/\/ @/);
+		for each (line in lines) {
+		  [, name, value] = line.match(/\/\/ @(\S+)\s*(.*)/);
+
+		  switch (name) {
+			case "licence":
+			  name = "license";
+			  break;
+		  }
+
+		  [key, prefix] = name.split(/:/).reverse();
+
+		  if (prefix) {
+			if (!headers[prefix]) 
+			  headers[prefix] = new Object;
+			header = headers[prefix];
+		  } else
+			header = headers;
+
+		  if (header[key] && !(header[key] instanceof Array))
+			header[key] = new Array(header[key]);
+
+		  if (header[key] instanceof Array)
+			header[key].push(value);
+		  else
+			header[key] = value;
+		}
+
+		headers["licence"] = headers["license"];
+
+	  return headers;
+	},
+	check: function(ver, id){
+		var that = this;
+		xhr({
+		  method:"GET",
+		  url:"http://userscripts.org/scripts/source/" + id + ".meta.js",
+		  headers:{
+			"Accept":"text/javascript; charset=UTF-8"
+		  },
+		  overrideMimeType:"application/javascript; charset=UTF-8",
+		  onload:function(response) {
+			var meta = that.metaParse(response.responseText),
+				ver0 = meta.version;
+			
+		  },
+		  onerror: function(e){
+			log("check version failed; \n" + JSON.stringify(e));
+		  }
+		});
+	}
+};
+
 
 /*
  * A JavaScript implementation of the RSA Data Security, Inc. MD5 Message

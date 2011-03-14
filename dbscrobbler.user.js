@@ -1,15 +1,18 @@
+var meta = <><![CDATA[
 // ==UserScript==
 // @name           豆瓣电台dbscrobbler
 // @namespace      http://whosemind.net
 // @description    记录 douban.fm 到last.fm
 // @include        http://douban.fm/
 // @include        http://douban.fm/?*
-// @require        http://js-addon.googlecode.com/files/autoupdatehelper.js
 // @require        https://github.com/justan/gmscrobber/raw/master/simple_scrobbler.js
 // @version        0.1
+// @uso:script     98833
 // ==/UserScript==
+]]></>.toString();
 
-Updater && new Updater({name: "豆瓣电台scrobbler",id: "98833",version: "0.1"}).check();
+meta = uso.metaParse(meta);
+uso.check(meta);
 
 (function(){
 var douban = function(){
