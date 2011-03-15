@@ -7,6 +7,7 @@
 
 	_md5 = hex_md5;
 
+//simple scrobbler for userscript
 var Scrobbler = function(){
 	var apikey = "4472aff22b680a870bfd583f99644a03",
 		secret = "cbc5528721f63b839720633d7c1258d2",
@@ -252,6 +253,7 @@ var Scrobbler = function(){
 	return fn;
 }();
 
+//auto updater
 var uso = {
 	metaParse: function(metadataBlock) {
 	  var headers = {};
@@ -300,11 +302,16 @@ var uso = {
 		  overrideMimeType:"application/javascript; charset=UTF-8",
 		  onload:function(response) {
 			var meta = that.metaParse(response.responseText),
-				ver0 = meta.version;
+				ver0 = meta.version, r;
 				
 			if(that.verCompare(ver, ver0) < 0){
-				alert([meta.name + " ver: " + ver0, "", meta.changelog].join("\n"));
-				document.location = "http://userscripts.org/scripts/source/" + id + ".user.js";
+				r = confirm([
+					meta.name + " ver: " + ver0, "",
+					"更新说明: " + meta.changelog,
+				""].join("\n    "));
+				if(r){
+					document.location = "http://userscripts.org/scripts/source/" + id + ".user.js";
+				}
 			}
 			
 		  },
@@ -320,11 +327,11 @@ var uso = {
 			return 0;
 		}
 		for(var i = 0; i < len; i++){
-			if(a0[i] > a1[i]){
-				return 1;
+			if(a0[i] < a1[i]){
+				return -1;
 			}
 		}
-		return -1;
+		return 1;
 	}
 };
 

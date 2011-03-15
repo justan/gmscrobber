@@ -7,11 +7,12 @@ var meta = <><![CDATA[
 // @include        http://g.top100.cn/*/html/player.html*
 // @require        https://github.com/justan/gmscrobber/raw/master/simple_scrobbler_user.js
 // @version        0.3.0
+// @uso:script     92863
+// @changelog      模块化程序
 // ==/UserScript==
 ]]></>.toString();
 
 meta = uso.metaParse(meta);
-uso.check(meta.version, meta.uso.script);
 
 (function(){
 var gm = function(){
@@ -171,7 +172,7 @@ var gm = function(){
 
 if(location.host != "g.top100.cn"){
 	if(unsafeWindow.top.location == unsafeWindow.location){//http://www.google.cn/music/player
-		
+		uso.check(meta.version, meta.uso.script);
 	}else{
 		(function _ses(){
 			if(!sc.sk){
@@ -190,5 +191,7 @@ if(location.host != "g.top100.cn"){
 			}
 		})();
 	}
+}else{
+	uso.check(meta.version, meta.uso.script);
 }
 })();
