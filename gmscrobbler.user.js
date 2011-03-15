@@ -34,28 +34,21 @@ var gm = function(){
 					log(info.title + " is the first song");
 					player.newsong(info);
 				}else if(len > 0 && !info.title && player.track){
-					log("stop");
-					sc.stop();
+					player.stop();
 					player.track = null;
 				}else if(len > 0 && info.title &&
 					(player.history[0].title != info.title || player.history[0].artist != info.artist)){
 					player.newsong(info);
 				}else if(player.track){
 					if($statele.style.display != "none" && len && player.state != "pause"){//显示中的播放按钮
-						sc.pause();
-						log("pause");
+						player.pause();
 						player.state = "pause";
 					}else if($statele.style.display == "none" && (player.playtime - player.lastplaytime) === 0){//不可信的定时器执行间隔
-						sc.buffer();
-						player.state = "buffer";
-						log("buffer");
-					}else if($statele.style.display == "none" && player.playtime - player.lastplaytime < -10 && this.track.state != "seek"){
+						player.buffer();
+					}else if($statele.style.display == "none" && player.playtime < player.lastplaytime && player.state != "seek"){//单曲循环
 						player.newsong(info);
-						//player.seek(player.playtime - player.lastplaytime);//单曲循环
 					}else if($statele.style.display == "none" && player.state != "play"){
-						sc.play();
-						log("play");
-						player.state = "play";
+						player.play();
 					}
 				}
 			}, 2000);
@@ -145,11 +138,28 @@ var gm = function(){
 				sc.nowPlaying(song);
 				this.history.unshift(song);
 				this.track = {};
+				this.state = "play";
 				setFav();
 				setTimeout(getAlbum, 10000);//专辑封面在更换歌曲后可能来不及改变
 			},
 			seek: function(){
-				
+				this.state = "seek";
+			},
+			pause: function(){
+				log("pause");
+			},
+			play: function(){
+				log("play");
+				this.state = "play";
+			},
+			buffer: function(){
+				this.state = "buffer";
+				this.pause();
+			},
+			stop: function(){
+				log("stop");
+				this.state = "stop";
+				sc.stop();
 			}
 		};
 		

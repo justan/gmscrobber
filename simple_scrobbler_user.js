@@ -83,7 +83,7 @@ var Scrobbler = function(){
 			
 			if(!this.type){
 				clearTimeout(_timer);
-				_timer = setTimeout(function(){that.scrobble()}, that.song.duration * scrate *1000);
+				this.timer = _timer = setTimeout(function(){that.scrobble()}, that.song.duration * scrate *1000);
 			}
 		},
 		scrobble: function(song){
