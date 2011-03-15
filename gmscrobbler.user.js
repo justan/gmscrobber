@@ -1,15 +1,17 @@
+var meta = <><![CDATA[
 // ==UserScript==
 // @name           谷歌音乐gmscrobbler
 // @namespace      http://whosemind.net
 // @description    记录谷歌音乐到 last.fm
 // @include        http://www.google.cn/music/player*
 // @include        http://g.top100.cn/*/html/player.html*
-// @require        http://js-addon.googlecode.com/files/autoupdatehelper.js
-// @require        https://github.com/justan/gmscrobber/raw/master/simple_scrobbler.js
+// @require        https://github.com/justan/gmscrobber/raw/master/simple_scrobbler_user.js
 // @version        0.3.0
 // ==/UserScript==
+]]></>.toString();
 
-Updater && new Updater({name: "谷歌音乐gmscrobbler",id: "92863",version: "0.3.0"}).check();
+meta = uso.metaParse(meta);
+uso.check(meta.version, meta.uso.script);
 
 (function(){
 var gm = function(){

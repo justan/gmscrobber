@@ -301,12 +301,30 @@ var uso = {
 		  onload:function(response) {
 			var meta = that.metaParse(response.responseText),
 				ver0 = meta.version;
+				
+			if(that.verCompare(ver, ver0) < 0){
+				alert([meta.name + " ver: " + ver0, "", meta.changelog].join("\n"));
+				document.location = "http://userscripts.org/scripts/source/" + id + ".user.js";
+			}
 			
 		  },
 		  onerror: function(e){
 			log("check version failed; \n" + JSON.stringify(e));
 		  }
 		});
+	},
+	verCompare: function(ver0, ver1){
+		var a0 = ver0.split("."), a1 = ver1.split("."),
+			len = Math.max(a0.length, a1.length);
+		if(ver0 == ver1){
+			return 0;
+		}
+		for(var i = 0; i < len; i++){
+			if(a0[i] > a1[i]){
+				return 1;
+			}
+		}
+		return -1;
 	}
 };
 
