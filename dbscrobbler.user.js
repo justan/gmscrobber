@@ -37,7 +37,14 @@ var douban = function(){
 				return;
 			}else if(/\.{3}$/.test(song.album)){
 				log("一个省略的专辑名...");
-				//album = getalbum()
+				if(o.type == cmds.start){
+					song.album = "";
+				}
+				setTimeout(function(){getAlbum(song.aid, function(at){
+					song.album = at;
+					log("新的专辑名是: " + at);
+				})}, 0);
+
 			}
 			switch(o.type){
 			case cmds.start:
@@ -77,7 +84,20 @@ var douban = function(){
 			//ex(o);
 		};
 	},
-	sc = new Scrobbler({name: "豆瓣电台", type: 1, ready: ready});
+	sc = new Scrobbler({name: "豆瓣电台", type: 1, ready: ready}),
+	getAlbum = function(id, cb){
+		var url = "http://api.douban.com/music/subject/" + id + "?alt=json";
+		xhr({
+			method: "GET",
+			url: url,
+			onload: function(d){
+				cb(JSON.parse(d.responseText)["title"]["$t"]);
+			},
+			onerror: function(e){
+				log("专辑信息获取失败.. \n" + JSON.stringify(e));
+			}
+		});
+	};
 };
 
 unsafeWindow.Do('douban', 'counter', 'coverflow', function() {
