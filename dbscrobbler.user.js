@@ -39,12 +39,11 @@ var douban = function(){
 				log("一个省略的专辑名...");
 				if(o.type == cmds.start){
 					song.album = "";
+					setTimeout(function(){getAlbum(song.aid, function(at){
+						sc.song.album = at;
+						log("新的专辑名是: " + at);
+					})}, 0);
 				}
-				setTimeout(function(){getAlbum(song.aid, function(at){
-					song.album = at;
-					log("新的专辑名是: " + at);
-				})}, 0);
-
 			}
 			switch(o.type){
 			case cmds.start:

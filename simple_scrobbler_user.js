@@ -98,7 +98,7 @@ var Scrobbler = function(){
 			},
 			function(d){
 				//log(JSON.stringify(d));
-				log(song.artist + "'s " + song.title + " scrobbled..");
+				log(song.artist + "'s " + song.title + " / " + song.album + " scrobbled..");
 			},
 			true);
 		},
