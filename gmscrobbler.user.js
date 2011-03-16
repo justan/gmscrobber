@@ -20,6 +20,7 @@ var gm = function(){
 		artistReg = /^.*?\(\s*(.*?)\s*\)$/,
 		$statele, $titlele, $timele,
 		_clickHandler = function(){},
+		likeHandler = function(){_clickHandler()},
 		listener = function(){
 			var info, len;
 			setInterval(function(){
@@ -96,19 +97,19 @@ var gm = function(){
 				ele.innerHTML = '<span><div class="icon">❤</div><span>取消喜欢</span></span><span class="fav"><div class="icon">❤</div><span>喜欢</span></span>';
 				ele.style.display = "none";
 				_iconele.appendChild(ele);
-				ele.addEventListener("click", _clickHandler, false);
+				ele.addEventListener("click", likeHandler, false);
 			}
 			
 			sc.getInfo(sc.song, function(i){
 				var fn1 = function(){
 					ele.firstChild.style.display = "";
 					ele.lastChild.style.display = "none";
-					_clickHandler = function(){fn2();sc.unlove()}
+					_clickHandler = function(){fn2();sc.unlove()};
 				},
 				fn2 = function(){
 					ele.firstChild.style.display = "none";
 					ele.lastChild.style.display = "";
-					_clickHandler = function(){fn1();sc.love();}
+					_clickHandler = function(){fn1();sc.love()};
 				};
 				if(i.islove == "1"){
 					fn1();

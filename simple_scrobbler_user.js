@@ -119,8 +119,8 @@ var Scrobbler = function(){
 			song = song || this.song;
 			this.ajax({
 				method: "track.unlove", 
-				track: this.info.title,
-				artist: this.info.artist,
+				track: song.title,
+				artist: song.artist,
 				_sig:""
 			},
 			function(d){
