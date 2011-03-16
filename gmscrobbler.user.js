@@ -6,9 +6,9 @@ var meta = <><![CDATA[
 // @include        http://www.google.cn/music/player*
 // @include        http://g.top100.cn/*/html/player.html*
 // @require        https://github.com/justan/gmscrobber/raw/master/simple_scrobbler_user.js
-// @version        0.3.0
+// @version        0.3.1
 // @uso:script     92863
-// @changelog      模块化程序
+// @changelog      修正"喜欢/取消喜欢"同步问题
 // ==/UserScript==
 ]]></>.toString();
 
@@ -147,10 +147,12 @@ var gm = function(){
 				this.state = "seek";
 			},
 			pause: function(){
-				log("pause");
+				sc.pause();
 			},
 			play: function(){
-				log("play");
+				var remainTime = (getInfo.getTotalTime() * sc.scrate - this.playtime)*1000
+				log("play, now play time info: " + this.playtime + " / " + remainTime/1000);
+				sc.play(remainTime);
 				this.state = "play";
 			},
 			buffer: function(){

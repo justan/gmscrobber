@@ -1,4 +1,4 @@
-﻿var log =  GM_log,//function(){},//unsafeWindow.console.log,//
+﻿var log = function(){},//GM_log,//unsafeWindow.console.log,//
 	getVal = GM_getValue,
 	setVal = GM_setValue,
 	delVal = GM_deleteValue,
@@ -20,6 +20,7 @@ var Scrobbler = function(){
 		this.type = info.type;
 		this.name = info.name || "";
 		this.ready = info.ready || function(){};
+		this.scrate = info.scrate || scrate;
 		this.init(this);
 	};
 	fn.prototype = {
@@ -63,9 +64,9 @@ var Scrobbler = function(){
 	//song's command
 		nowPlaying: function(song){
 			var that = this;
-			this.play();
-			this.timestamp = Math.floor(new Date().getTime()/1000);
 			this.song = song; //song: {title: "", artist: "", duration: "", album: ""}
+			this.timestamp = Math.floor(new Date().getTime()/1000);
+			this.play();
 			//log(JSON.stringify(song));
 			log(song.title + " now playing");
 			this.ajax({
@@ -80,13 +81,9 @@ var Scrobbler = function(){
 				//log(JSON.stringify(d));
 			},
 			true);
-			
-			if(!this.type){
-				clearTimeout(_timer);
-				this.timer = _timer = setTimeout(function(){that.scrobble()}, that.song.duration * scrate *1000);
-			}
 		},
 		scrobble: function(song){
+			var that = this;
 			song = song || this.song;
 			this.ajax({
 				method: "track.scrobble", 
@@ -98,6 +95,7 @@ var Scrobbler = function(){
 			},
 			function(d){
 				//log(JSON.stringify(d));
+				that.song.iscrobble = true;
 				log(song.artist + "'s " + song.title + " / " + song.album + " scrobbled..");
 			},
 			true);
@@ -158,11 +156,20 @@ var Scrobbler = function(){
 		},
 		
 	//play control
-		play: function(){
+		play: function(remainTime){
+			var that = this, rt = remainTime;
 			this.state = "play";
+			
+			if(!rt){
+				rt = (that.song.duration*this.scrate - (Math.floor(new Date().getTime()/1000) - this.timestamp))*1000;
+			}
+			if(!this.type && !this.song.iscrobble){
+				clearTimeout(_timer);
+				_timer = setTimeout(function(){that.scrobble()}, rt);
+			}
 		},
 		pause: function(){
-			//_timer && clearTimeout(_timer);
+			this.type || clearTimeout(_timer);
 			this.state = "pause";
 		},
 		buffer: function(){
@@ -170,7 +177,7 @@ var Scrobbler = function(){
 			this.state = "buffer";
 		},
 		stop: function(){
-			_timer && clearTimeout(_timer);
+			this.type || clearTimeout(_timer);
 			this.state = "stop";
 		},
 		seek: function(offset){
