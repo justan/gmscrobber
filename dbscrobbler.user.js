@@ -6,8 +6,7 @@ var meta = <><![CDATA[
 // @include        http://douban.fm/
 // @include        http://douban.fm/?*
 // @require        https://github.com/justan/gmscrobber/raw/master/simple_scrobbler_user.js
-// @version        0.2
-// @changelog      增加了自动更新
+// @version        0.1
 // @uso:script     98833
 // ==/UserScript==
 ]]></>.toString();
