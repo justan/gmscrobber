@@ -6,9 +6,9 @@ var meta = <><![CDATA[
 // @include        http://www.google.cn/music/player*
 // @include        http://g.top100.cn/*/html/player.html*
 // @require        https://github.com/justan/gmscrobber/raw/master/simple_scrobbler_user.js
-// @version        0.3.1
+// @version        0.3.2
 // @uso:script     92863
-// @changelog      修正"喜欢/取消喜欢"同步问题
+// @changelog      歌曲记录将按照实际播放时间进行(同官方客户端scrobbler)
 // ==/UserScript==
 ]]></>.toString();
 
@@ -134,25 +134,34 @@ var gm = function(){
 			history: [],
 			lastplaytime: 0,
 			playtime: 0,
+			offset: 0,//实际播放时间与显示的播放时间差值
 			track: null,
 			newsong: function(song){
 				sc.nowPlaying(song);
 				this.history.unshift(song);
 				this.track = {};
 				this.state = "play";
+				this.offset = 0;
+				this.lastplaytime = 0;
+				this.playtime = 0;
 				setFav();
 				setTimeout(getAlbum, 10000);//专辑封面在更换歌曲后可能来不及改变
 			},
 			seek: function(){
 				this.state = "seek";
+				log("seek");
+				getInfo.getPlayTime();
+				this.offset += (this.lastplaytime - this.playtime);
+				log("realplaytime/offset: " + (this.playtime + this.offset) + " / " + this.offset);
 			},
 			pause: function(){
 				sc.pause();
 			},
 			play: function(){
-				var remainTime = (getInfo.getTotalTime() * sc.scrate - this.playtime)*1000
-				log("play, now play time info: " + this.playtime + " / " + remainTime/1000);
-				sc.play(remainTime);
+				var rt;//remain time
+				rt = (getInfo.getTotalTime() * sc.scrate - (this.playtime + this.offset))*1000;
+				log("play, now play time info, playtime: " + this.playtime + " / remain time" + rt/1000 + " / offset: " + this.offset);
+				sc.play(rt);
 				this.state = "play";
 			},
 			buffer: function(){

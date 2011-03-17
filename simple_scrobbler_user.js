@@ -66,6 +66,7 @@ var Scrobbler = function(){
 			var that = this;
 			this.song = song; //song: {title: "", artist: "", duration: "", album: ""}
 			this.timestamp = Math.floor(new Date().getTime()/1000);
+			this.info = {iscrobble: false, offset: 0};
 			this.play();
 			//log(JSON.stringify(song));
 			log(song.title + " now playing");
@@ -95,7 +96,7 @@ var Scrobbler = function(){
 			},
 			function(d){
 				//log(JSON.stringify(d));
-				that.song.iscrobble = true;
+				that.info.iscrobble = true;
 				log(song.artist + "'s " + song.title + " / " + song.album + " scrobbled..");
 			},
 			true);
@@ -163,7 +164,7 @@ var Scrobbler = function(){
 			if(!rt){
 				rt = (that.song.duration*this.scrate - (Math.floor(new Date().getTime()/1000) - this.timestamp))*1000;
 			}
-			if(!this.type && !this.song.iscrobble){
+			if(!this.type && !this.info.iscrobble){
 				clearTimeout(_timer);
 				_timer = setTimeout(function(){that.scrobble()}, rt);
 			}
@@ -181,7 +182,7 @@ var Scrobbler = function(){
 			this.state = "stop";
 		},
 		seek: function(offset){
-			
+			this.info.offset += offset;
 		},
 		
 		ajax: function(params, callback, auth){
