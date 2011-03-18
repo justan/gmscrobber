@@ -261,8 +261,9 @@ var Scrobbler = function(){
 	return fn;
 }();
 
-//auto updater
+//userscript 自动更新工具
 var uso = {
+	//usersctipt meta 解析工具
 	metaParse: function(metadataBlock) {
 	  var headers = {};
 	  var line, name, prefix, header, key, value;
@@ -299,8 +300,8 @@ var uso = {
 
 	  return headers;
 	},
-	check: function(ver, id){
-		var that = this;
+	check: function(ver, id, cb){
+		var that = this, self = arguments.callee, flag = false;
 		xhr({
 		  method:"GET",
 		  url:"http://userscripts.org/scripts/source/" + id + ".meta.js",
@@ -310,18 +311,29 @@ var uso = {
 		  overrideMimeType:"application/javascript; charset=UTF-8",
 		  onload:function(response) {
 			var meta = that.metaParse(response.responseText),
-				ver0 = meta.version, r;
+				ver0 = meta.version, r,
+				cmenu = function(){
+					if(!self._rmc){
+						rmc("更新" + meta.name + " " + ver + " 至 " + ver0, function(){
+							document.location = "http://userscripts.org/scripts/source/" + id + ".user.js";
+						});
+						self._rmc = true;
+					}
+				};
 				
 			if(that.verCompare(ver, ver0) < 0){
+				flag = true;
 				r = confirm([
 					meta.name + " ver: " + ver0, "",
-					"更新说明: " + meta.changelog,
-				""].join("\n    "));
+					"更新说明: " + meta.changelog, "",
+					"是否更新?"].join("\n    "));
 				if(r){
 					document.location = "http://userscripts.org/scripts/source/" + id + ".user.js";
+				}else{
+					cmenu();
 				}
 			}
-			
+			typeof cb == "function" && cb(flag);
 		  },
 		  onerror: function(e){
 			log("check version failed; \n" + JSON.stringify(e));
@@ -336,7 +348,7 @@ var uso = {
 		}
 		for(var i = 0; i < len; i++){
 			if(a0[i] < a1[i]){
-				return -1;
+				return -1;//ver < ver0
 			}
 		}
 		return 1;
