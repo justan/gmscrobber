@@ -347,7 +347,7 @@ var uso = {
 			return 0;
 		}
 		for(var i = 0; i < len; i++){
-			if(a0[i] < a1[i]){
+			if(a0[i] < a1[i] || typeof a0[i] == "undefined"){
 				return -1;//ver < ver0
 			}
 		}
