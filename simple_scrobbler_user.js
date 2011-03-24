@@ -162,7 +162,7 @@ var Scrobbler = function(){
 			this.state = "play";
 			
 			if(!rt){
-				rt = (that.song.duration*this.scrate - (Math.floor(new Date().getTime()/1000) - this.timestamp))*1000;
+				rt = (Math.min(that.song.duration*this.scrate, 240) - (Math.floor(new Date().getTime()/1000) - this.timestamp))*1000;
 			}
 			if(!this.type && !this.info.iscrobble){
 				clearTimeout(_timer);
