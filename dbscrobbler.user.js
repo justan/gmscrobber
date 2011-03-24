@@ -6,8 +6,8 @@ var meta = <><![CDATA[
 // @include        http://douban.fm/
 // @include        http://douban.fm/?*
 // @require        https://github.com/justan/gmscrobber/raw/master/simple_scrobbler_user.js
-// @version        0.1.1
-// @changelog      新增过滤广告功能
+// @version        0.1.2
+// @changelog      修复多歌手记录问题
 // @uso:script     98833
 // ==/UserScript==
 ]]></>.toString();
@@ -31,24 +31,25 @@ var douban = function(){
 			song = o.song;
 			
 			song.album = song.albumtitle;
-			song.duration = song.len || 180;
+			song.duration = song.len || 180;//如果没有时间，就3分钟吧
 			
 			setTimeout(function(){
 				if(song.ssid == null || song.subtype == "T"){
 					log("广告, 略过...");
 					return;
-				}else if(/\.{3}$/.test(song.album)){
-					log("一个省略的专辑名...");
-					if(o.type == cmds.start){
-						song.album = "";
-						getAlbum(song.aid, function(at){
-							sc.song.album = at;
-							log("新的专辑名是: " + at);
-						});
-					}
 				}
 				switch(o.type){
 				case cmds.start:
+					if(/\.{3}$/.test(song.album)){
+						if(o.type == cmds.start){
+							song.album = "";
+							getAlbum(song.aid, function(at){
+								sc.song.album = at;
+								log("一个省略的专辑名...新的专辑名是: " + at);
+							});
+						}
+					}
+					song.artist = song.artist.replace(/\s+\/\s+.+$/,"");//多个歌手，就保留第一个
 					sc.nowPlaying(song);
 					sc.getInfo(song, function(p){
 						log(JSON.stringify(p));
