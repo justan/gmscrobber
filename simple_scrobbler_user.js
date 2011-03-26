@@ -227,8 +227,8 @@ var Scrobbler = function(){
 				callback(res);
 			},
 			onerror: function(e){
-				alert(params.method + "failed");
-				log(params.method + " request failed.. " + JSON.stringify(e));
+				//alert(params.method + "failed");
+				log("[ error ] " + params.method + " request failed.. " + JSON.stringify(e));
 			}
 		});
 	};
