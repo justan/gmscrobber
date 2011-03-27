@@ -6,9 +6,9 @@ var meta = <><![CDATA[
 // @include        http://www.google.cn/music/player*
 // @include        http://g.top100.cn/*/html/player.html*
 // @require        https://github.com/justan/gmscrobber/raw/master/simple_scrobbler_user.js
-// @version        0.3.2
+// @version        0.3.3
 // @uso:script     92863
-// @changelog      歌曲记录将按照实际播放时间进行(同官方客户端scrobbler)
+// @changelog      更准确的非中文专辑名
 // ==/UserScript==
 ]]></>.toString();
 
@@ -121,10 +121,24 @@ var gm = function(){
 			});
 		},
 		getAlbum = function(){
-			var _albumele = document.getElementsByClassName("album-image")[0];
+			var playlists,  _albumele, item,
+			    album0, ablum1;
+			playlists = document.getElementsByClassName("playlist-node");
+			for(var i = 0, l = playlists.length; i < l; i++){
+			  item = playlists[i];
+			  if(item.firstChild && item.firstChild.className == "playing-icon"){
+			    //alert(item.title);
+			    album0 = item.title.replace(artistReg, "$1");//左侧播放列表中专辑名
+			    //log("album0: " + album0);
+			    break;
+			  }
+			}
+			_albumele = document.getElementsByClassName("album-image")[0];
 			if(_albumele && _albumele.title){
-				sc.song.album = _albumele.title.replace(/^([^(]+)(\s*\()?.*/, "$1");
-				//log("album " + sc.song.album)
+				album1 = _albumele.title.replace(/^([^(]+)(\s*\()?.*/, "$1");//右侧专辑图片的专辑名
+				//log("album1: " + album1);
+				sc.song.album = new RegExp(_albumele.title).test(item.title) ? album0 : album1;
+				log("album: " + sc.song.album);
 			}else{
 				setTimeout(function(){getAlbum()}, 1000);
 			}
