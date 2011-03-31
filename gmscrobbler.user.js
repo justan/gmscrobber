@@ -8,7 +8,7 @@ var meta = <><![CDATA[
 // @require        https://github.com/justan/gmscrobber/raw/master/simple_scrobbler_user.js
 // @version        0.3.3
 // @uso:script     92863
-// @changelog      更准确的非中文专辑名
+// @changelog      1.准确的非中文专辑名\n2.安静的更新提示
 // ==/UserScript==
 ]]></>.toString();
 
