@@ -311,27 +311,19 @@ var uso = {
 		  overrideMimeType:"application/javascript; charset=UTF-8",
 		  onload:function(response) {
 			var meta = that.metaParse(response.responseText),
-				ver0 = meta.version, r,
-				cmenu = function(){
-					if(!self._rmc){
-						rmc("更新" + meta.name + " " + ver + " 至 " + ver0, function(){
-							document.location = "http://userscripts.org/scripts/source/" + id + ".user.js";
-						});
-						self._rmc = true;
-					}
-				};
+				ver0 = meta.version, r;
 				
 			if(that.verCompare(ver, ver0) < 0){
 				flag = true;
-				r = confirm([
-					meta.name + " ver: " + ver0, "",
-					"更新说明: " + meta.changelog, "",
-					"是否更新?"].join("\n    "));
-				if(r){
-					document.location = "http://userscripts.org/scripts/source/" + id + ".user.js";
-				}else{
-					cmenu();
-				}
+				rmc("更新" + meta.name + " " + ver + " 至 " + ver0, function(){
+					r = confirm([
+						meta.name + " ver: " + ver0, "",
+						"更新说明: " + meta.changelog, "",
+						"是否更新?"].join("\n    "));
+					if(r){
+						document.location = "http://userscripts.org/scripts/source/" + id + ".user.js";
+					}
+				});
 			}
 			typeof cb == "function" && cb(flag);
 		  },
