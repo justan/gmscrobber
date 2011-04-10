@@ -7,7 +7,7 @@ var meta = <><![CDATA[
 // @include        http://douban.fm/?*
 // @require        https://github.com/justan/gmscrobber/raw/master/simple_scrobbler_user.js
 // @version        0.1.3
-// @changelog      消除一个对豆瓣电台的干扰
+// @changelog      消除一个对豆瓣电台记录效果的干扰
 // @uso:script     98833
 // ==/UserScript==
 ]]></>.toString();
