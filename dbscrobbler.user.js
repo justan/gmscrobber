@@ -7,7 +7,7 @@ var meta = <><![CDATA[
 // @include        http://douban.fm/?*
 // @require        https://github.com/justan/gmscrobber/raw/master/simple_scrobbler_user.js
 // @version        0.1.3
-// @changelog      消除一个对豆瓣电台记录效果的干扰
+// @changelog      同步last.fm红星歌曲到douban.fm
 // @uso:script     98833
 // ==/UserScript==
 ]]></>.toString();
@@ -62,6 +62,16 @@ var douban = function(){
 								o.type = cmds.like;
 								ex(JSON.stringify(o));
 								o.type = cmds.start;
+								xhr({
+									method: "GET",
+									url: "http://douban.fm/j/mine/playlist?type=r&sid=554473&channel=0",
+									onload: function(data){
+										log("同步红星至豆瓣电台: " + d.responseText);
+									},
+									onerror: function(e){
+										log("同步红星至豆瓣电台失败.. \n" + JSON.stringify(e));
+									}
+								});
 							}
 						}
 						document.getElementById("radioplayer").parentNode.title = "在last.fm中记录 " + p.len + " 次";
