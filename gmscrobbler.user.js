@@ -11,7 +11,7 @@ var meta = <><![CDATA[
 // @changelog      1.准确的非中文专辑名\n2.安静的更新提示
 // ==/UserScript==
 ]]></>.toString();
-
+ 
 meta = uso.metaParse(meta);
 
 (function(){
