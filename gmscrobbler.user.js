@@ -6,9 +6,9 @@ var meta = <><![CDATA[
 // @include        http://www.google.cn/music/player*
 // @include        http://g.top100.cn/*/html/player.html*
 // @require        https://github.com/justan/gmscrobber/raw/master/simple_scrobbler_user.js
-// @version        0.3.3
+// @version        0.3.4
 // @uso:script     92863
-// @changelog      1.准确的非中文专辑名\n2.安静的更新提示
+// @changelog      较完整的支持多个歌手的曲目记录
 // ==/UserScript==
 ]]></>.toString();
 
@@ -65,7 +65,15 @@ var gm = function(){
 				return $titlele.title.replace(titleReg, "$1");
 			};
 			fn.getArtist = function(){
-				return $titlele.lastChild.innerHTML.replace(artistReg, "$1");
+				var artist, artists = [], len = $titlele.children.length, con = "&";
+				for(var i = 1; i < len; i++){
+					artists.unshift($titlele.children[i].innerHTML.replace(artistReg, "$1"));
+				}
+				if(/\w/.test(artists[0])){//多个英文名间需要连字符
+					con = " & ";
+				}
+				artist = artists.join(con);
+				return artist;
 			};
 			fn.getTotalTime = function(){
 				var ta = $timele.lastChild.innerHTML.split(":");
@@ -208,7 +216,7 @@ var gm = function(){
 
 if(location.host != "g.top100.cn"){
 	if(unsafeWindow.top.location == unsafeWindow.location){//http://www.google.cn/music/player
-		uso.check(meta.version, meta.uso.script);
+		uso.check(meta.version, meta.uso.script, false);
 	}else{
 		(function _ses(){
 			if(!sc.sk){
@@ -228,6 +236,6 @@ if(location.host != "g.top100.cn"){
 		})();
 	}
 }else{
-	uso.check(meta.version, meta.uso.script);
+	uso.check(meta.version, meta.uso.script, false);
 }
 })();
