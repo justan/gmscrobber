@@ -38,6 +38,7 @@ var douban = function(){
 					log("广告, 略过...");
 					return;
 				}
+				var conn = "&";
 				switch(o.type){
 				case cmds.start:
 					if(/\.{3}$/.test(song.album)){
@@ -49,7 +50,17 @@ var douban = function(){
 							});
 						}
 					}
-					song.artist = song.artist.replace(/\s+\/\s+.+$/,"");//多个歌手，就保留第一个
+					//song.artist = song.artist.replace(/\s+\/\s+.+$/,"");//多个歌手，就保留第一个
+					//song.artist = song.artist.replace(/\s*[\/\&]\s*/, " & ");
+					
+					song.artist = song.artist.split(/\s*[\/\&]\s*/);
+					for(var i = 0, l = song.artist.length; i < l; i++){
+						if(/\w/.test(song.artist)){
+							conn = " & ";//英文名用" & "分割
+							break;
+						}
+					}
+					song.artist = song.artist.join(conn);
 					sc.nowPlaying(song);
 					sc.getInfo(song, function(p){
 						log(JSON.stringify(p));
@@ -64,9 +75,9 @@ var douban = function(){
 								o.type = cmds.start;
 								xhr({
 									method: "GET",
-									url: "http://douban.fm/j/mine/playlist?type=r&sid=554473&channel=0",
+									url: "http://douban.fm/j/mine/playlist?type=r&sid=" + o.song.sid + "&channel=0",
 									onload: function(data){
-										log("同步红星至豆瓣电台: " + d.responseText);
+										log("同步红星至豆瓣电台成功");
 									},
 									onerror: function(e){
 										log("同步红星至豆瓣电台失败.. \n" + JSON.stringify(e));
