@@ -1,4 +1,4 @@
-[GMscrobber](http://whosemind.net/content/gmscrobber/) - Scrobble your Song Anywhere
+[GMscrobber](http://whosemind.net/content/gmscrobber/) - Scrobble Anywhere
 ====================================================================================
 
 userscript for Firefox + greasemonkey
