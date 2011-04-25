@@ -8,7 +8,7 @@ var meta = <><![CDATA[
 // @require        https://github.com/justan/gmscrobber/raw/master/simple_scrobbler_user.js
 // @version        0.3.4
 // @uso:script     92863
-// @changelog      多个歌手的曲目记录更新
+// @changelog      更新多歌手记录问题
 // ==/UserScript==
 ]]></>.toString();
 

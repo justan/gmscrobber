@@ -6,7 +6,7 @@ var meta = <><![CDATA[
 // @include        http://douban.fm/
 // @include        http://douban.fm/?*
 // @require        https://github.com/justan/gmscrobber/raw/master/simple_scrobbler_user.js
-// @version        0.1.3
+// @version        0.1.4
 // @changelog      同步last.fm红星歌曲到douban.fm
 // @uso:script     98833
 // ==/UserScript==
