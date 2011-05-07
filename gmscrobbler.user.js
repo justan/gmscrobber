@@ -68,9 +68,9 @@ var gm = function(){
 				var artist, artists = [], len = $titlele.children.length, con = "&";
 				for(var i = 1; i < len; i++){
 					artists.unshift($titlele.children[i].innerHTML.replace(artistReg, "$1"));
-				}
-				if(/\w/.test(artists[0])){//多个英文名间需要连字符
-					con = " & ";
+          if(/\w/.test(artists[0])){//英文名用" & "连接
+            con = " & ";
+          }
 				}
 				artist = artists.join(con);
 				return artist;
@@ -180,10 +180,10 @@ var gm = function(){
 				sc.pause();
 			},
 			play: function(){
-				var rt;//remain time
-				rt = (getInfo.getTotalTime() * sc.scrate - (this.playtime + this.offset))*1000;
-				log("play, now play time info, playtime: " + this.playtime + " / remain time" + rt/1000 + " / offset: " + this.offset);
-				sc.play(rt);
+				var rpt;//real play time
+				rpt = this.playtime + this.offset;
+				log("play, now play time info, playtime: " + this.playtime + " / offset: " + this.offset);
+				sc.play(rpt);
 				this.state = "play";
 			},
 			buffer: function(){

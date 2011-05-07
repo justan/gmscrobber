@@ -157,13 +157,14 @@ var Scrobbler = function(){
 		},
 		
 	//play control
-		play: function(remainTime){
-			var that = this, rt = remainTime;
+		play: function(realPlayTime){
+			var that = this, rpt = realPlayTime, rt;
 			this.state = "play";
 			
-			if(!rt){
-				rt = (Math.min(that.song.duration*this.scrate, 240) - (Math.floor(new Date().getTime()/1000) - this.timestamp))*1000;
+			if(!rpt){
+				rpt = Math.floor(new Date().getTime()/1000) - this.timestamp;
 			}
+      rt = (Math.min(that.song.duration*this.scrate, 240) - rpt)*1000;//remain time
 			if(!this.type && !this.info.iscrobble){
 				clearTimeout(_timer);
 				_timer = setTimeout(function(){that.scrobble()}, rt);
