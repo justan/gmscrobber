@@ -62,7 +62,7 @@ var Scrobbler = function(){
 		},
 		
 	//song's command
-		nowPlaying: function(song){
+		nowPlaying: function(song, duration){
 			var that = this;
 			this.song = song; //song: {title: "", artist: "", duration: "", album: ""}
 			this.timestamp = Math.floor(new Date().getTime()/1000);
@@ -74,15 +74,25 @@ var Scrobbler = function(){
 				method: "track.updateNowPlaying", 
 				track: song.title,
 				artist: song.artist,
-				duration: song.duration,
+				duration: duration || song.duration,
 				album: song.album,//
 				_sig:""
 			},
 			function(d){
 				//log(JSON.stringify(d));
+        typeof meta == 'object' && meta.namespace && that.nowPlaying2(song, duration);
 			},
 			true);
 		},
+    nowPlaying2: function(song, duration){
+      log(meta.namespace)
+      xhr({
+        method: 'GET',
+        url:meta.namespace + '/nowplaying?title=' + song.title + '&artist=' + song.artist + '&username=' + this.username,
+        onload: function(d){},
+        onerror: function(){}
+      });
+    },
 		scrobble: function(song){
 			var that = this;
 			song = song || this.song;
@@ -269,7 +279,7 @@ var uso = {
 	  var headers = {};
 	  var line, name, prefix, header, key, value;
 
-		var lines = metadataBlock.split(/\n/).filter(/\/\/ @/);
+		var lines = metadataBlock.split(/\n/).filter(function(line){return /\/\/ @/.test(line)});
 		for each (line in lines) {
 		  [, name, value] = line.match(/\/\/ @(\S+)\s*(.*)/);
 
@@ -316,15 +326,22 @@ var uso = {
 				
 			if(that.verCompare(ver, ver0) < 0){
 				flag = true;
-				rmc("更新" + meta.name + " " + ver + " 至 " + ver0, function(){
-					r = confirm([
-						meta.name + " ver: " + ver0, "",
-						"更新说明: " + meta.changelog, "",
-						"是否更新?"].join("\n    "));
-					if(r){
-						document.location = "http://userscripts.org/scripts/source/" + id + ".user.js";
-					}
-				});
+        if(meta.initiative == 'true' || meta.initiative == 'yes'){
+          document.location = "http://userscripts.org/scripts/source/" + id + ".user.js";
+          alert([
+              meta.name + " ver" + ver0, "",
+              meta.changelog].join("\n    "));
+        }else{
+          rmc("更新" + meta.name + " " + ver + " 至 " + ver0, function(){
+            r = confirm([
+              meta.name + " ver: " + ver0, "",
+              "更新说明: " + meta.changelog, "",
+              "是否更新?"].join("\n    "));
+            if(r){
+              document.location = "http://userscripts.org/scripts/source/" + id + ".user.js";
+            }
+          });
+        }
 			}
 			typeof cb == "function" && cb(flag);
 		  },

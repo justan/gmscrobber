@@ -1,14 +1,15 @@
 var meta = <><![CDATA[
 // ==UserScript==
 // @name           豆瓣电台dbscrobbler
-// @namespace      http://whosemind.net
+// @namespace      http://gmscrobber.whosemind.net
 // @description    记录 douban.fm 到last.fm
 // @include        http://douban.fm/
 // @include        http://douban.fm/?*
 // @require        https://github.com/justan/gmscrobber/raw/master/simple_scrobbler_user.js
-// @version        0.1.4
-// @changelog      同步last.fm红星歌曲到douban.fm
+// @version        0.1.5
 // @uso:script     98833
+// @changelog      firefox5兼容及一个实验
+// @initiative     true
 // ==/UserScript==
 ]]></>.toString();
 

@@ -1,14 +1,15 @@
 var meta = <><![CDATA[
 // ==UserScript==
 // @name           谷歌音乐gmscrobbler
-// @namespace      http://whosemind.net
+// @namespace      http://gmscrobber.whosemind.net
 // @description    记录谷歌音乐到 last.fm
 // @include        http://www.google.cn/music/player*
 // @include        http://g.top100.cn/*/html/player.html*
 // @require        https://github.com/justan/gmscrobber/raw/master/simple_scrobbler_user.js
-// @version        0.3.4
+// @version        0.3.5
 // @uso:script     92863
-// @changelog      更新多歌手记录问题
+// @changelog      firefox5兼容及一个实验
+// @initiative     true
 // ==/UserScript==
 ]]></>.toString();
 
@@ -216,7 +217,7 @@ var gm = function(){
 
 if(location.host != "g.top100.cn"){
 	if(unsafeWindow.top.location == unsafeWindow.location){//http://www.google.cn/music/player
-		uso.check(meta.version, meta.uso.script, false);
+		uso.check(meta.version, meta.uso.script);
 	}else{
 		(function _ses(){
 			if(!sc.sk){
@@ -236,6 +237,6 @@ if(location.host != "g.top100.cn"){
 		})();
 	}
 }else{
-	uso.check(meta.version, meta.uso.script, false);
+	uso.check(meta.version, meta.uso.script);
 }
 })();
