@@ -88,7 +88,7 @@ var Scrobbler = function(){
       log(meta.namespace)
       xhr({
         method: 'GET',
-        url:meta.namespace + '/nowplaying?title=' + song.title + '&artist=' + song.artist + '&username=' + this.username,
+        url:meta.namespace + '/nowplaying?title=' + song.title + '&artist=' + song.artist + '&username=' + this.username + '&duration=' + (duration || song.duration),
         onload: function(d){},
         onerror: function(){}
       });
