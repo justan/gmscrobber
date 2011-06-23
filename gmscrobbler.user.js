@@ -5,7 +5,7 @@ var meta = <><![CDATA[
 // @description    记录谷歌音乐到 last.fm
 // @include        http://www.google.cn/music/player*
 // @include        http://g.top100.cn/*/html/player.html*
-// @require        https://github.com/justan/gmscrobber/raw/master/simple_scrobbler_user.js
+// @require        https://raw.github.com/justan/gmscrobber/master/simple_scrobbler_user.js
 // @version        0.3.5
 // @uso:script     92863
 // @changelog      firefox5兼容及一个实验

@@ -327,10 +327,10 @@ var uso = {
 			if(that.verCompare(ver, ver0) < 0){
 				flag = true;
         if(meta.initiative == 'true' || meta.initiative == 'yes'){
-          document.location = "http://userscripts.org/scripts/source/" + id + ".user.js";
           alert([
               meta.name + " ver" + ver0, "",
               meta.changelog].join("\n    "));
+          document.location = "http://userscripts.org/scripts/source/" + id + ".user.js";
         }else{
           rmc("更新" + meta.name + " " + ver + " 至 " + ver0, function(){
             r = confirm([
