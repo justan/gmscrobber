@@ -6,6 +6,7 @@ var meta = <><![CDATA[
 // @include        http://douban.fm/
 // @include        http://douban.fm/?*
 // @require        https://raw.github.com/justan/gmscrobber/master/simple_scrobbler_user.js
+// @require        ./lyrics.js
 // @version        0.1.5
 // @uso:script     98833
 // @changelog      firefox5兼容及一个实验

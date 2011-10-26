@@ -6,7 +6,7 @@
 	rmc = GM_registerMenuCommand,
 
 	_md5 = hex_md5;
-
+  
 //simple scrobbler for userscript
 var Scrobbler = function(){
 	var apikey = "4472aff22b680a870bfd583f99644a03",
@@ -26,8 +26,9 @@ var Scrobbler = function(){
 	fn.prototype = {
 		init: function(that){
 			var sk = getVal("session"),
-				token = document.location.search.replace(tokenreg, "$1");
+				token = document.location.search.match(tokenreg);
 			that = that || this;
+      token = token && token[1];
 			
 			log(sk + "\n" + token + "\n" + document.location.href);
 			if(sk){
@@ -81,6 +82,7 @@ var Scrobbler = function(){
 			function(d){
 				//log(JSON.stringify(d));
         typeof meta == 'object' && meta.namespace && that.nowPlaying2(song, duration);
+        typeof lyc == 'function' && lyc(song.title, song.artist, song.album);
 			},
 			true);
 		},
@@ -277,11 +279,13 @@ var uso = {
 	//usersctipt meta 解析工具
 	metaParse: function(metadataBlock) {
 	  var headers = {};
-	  var line, name, prefix, header, key, value;
+	  var line, name, prefix, header, key, value, _t;
 
 		var lines = metadataBlock.split(/\n/).filter(function(line){return /\/\/ @/.test(line)});
-		for each (line in lines) {
-		  [, name, value] = line.match(/\/\/ @(\S+)\s*(.*)/);
+		lines.forEach(function(line) {
+		  _t = line.match(/\/\/ @(\S+)\s*(.*)/);
+      name = _t[1];
+      value = _t[2];
 
 		  switch (name) {
 			case "licence":
@@ -289,7 +293,9 @@ var uso = {
 			  break;
 		  }
 
-		  [key, prefix] = name.split(/:/).reverse();
+		  _t = name.split(/:/).reverse();
+      key = _t[0];
+      prefix = _t[1];
 
 		  if (prefix) {
 			if (!headers[prefix]) 
@@ -305,7 +311,7 @@ var uso = {
 			header[key].push(value);
 		  else
 			header[key] = value;
-		}
+		});
 
 		headers["licence"] = headers["license"];
 
