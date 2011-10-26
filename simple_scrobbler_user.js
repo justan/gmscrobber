@@ -364,8 +364,10 @@ var uso = {
 		}
 		for(var i = 0; i < len; i++){
 			if(a0[i] < a1[i] || typeof a0[i] == "undefined"){
-				return -1;//ver < ver0
-			}
+				return -1;//ver0 < ver1
+			}else if(a0[i] != a1[i]){
+        break;
+      }
 		}
 		return 1;
 	}
