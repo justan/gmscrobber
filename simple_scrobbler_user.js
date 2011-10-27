@@ -379,7 +379,7 @@ var uso = {
 		var that = this, self = arguments.callee, flag = false;
 		xhr({
 		  method:"GET",
-		  url:"http://userscripts.org/scripts/source/" + id + ".meta.js",
+		  url:"https://userscripts.org/scripts/source/" + id + ".meta.js",
 		  headers:{
 			"Accept":"text/javascript; charset=UTF-8"
 		  },
