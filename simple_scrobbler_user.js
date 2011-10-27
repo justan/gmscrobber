@@ -81,18 +81,28 @@ var Scrobbler = function(){
 			},
 			function(d){
 				//log(JSON.stringify(d));
-        typeof meta == 'object' && meta.namespace && that.nowPlaying2(song, duration);
-        typeof lyc == 'function' && lyc(song.title, song.artist, song.album);
 			},
 			true);
+      
+      that.record(song, 'nowplaying');
+      lyr(song.title, song.artist, song.album);
 		},
-    nowPlaying2: function(song, duration){
-      log(meta.namespace)
+    record: function(song, type){
+      var query = uso.clone(song), path;
+      query.source = document.location.host;
+      query.version = meta.version;
+      query.username = this.username;
+      query = uso.paramSerialize(query);
+      if(type == 'nowplaying'){
+        path = '/nowplaying?';
+      }else if(type == 'scrobble'){
+        path = '/scrobble?';
+      }else{
+        return false;
+      }
       xhr({
         method: 'GET',
-        url:meta.namespace + '/nowplaying?title=' + encodeURIComponent(song.title) + '&artist=' + encodeURIComponent(song.artist) + '&username=' + encodeURIComponent(this.username) + '&duration=' + (duration || song.duration) + '&source=' + document.location.host,
-        onload: function(d){},
-        onerror: function(){}
+        url: meta.namespace + path + query
       });
     },
 		scrobble: function(song){
@@ -112,6 +122,7 @@ var Scrobbler = function(){
 				log(song.artist + "'s " + song.title + " / " + song.album + " scrobbled..");
 			},
 			true);
+      that.record(song, 'scrobble');
 		},
 		love: function(song){
 			song = song || this.song;			
@@ -254,14 +265,13 @@ var Scrobbler = function(){
 			flag = end;
 		}
 		params.api_key = apikey;
-		for(var key in params){
+    for(var key in params){
 			if(params[key]){
 				keys.push(key + params[key]);
-				str1 += encodeURIComponent(key) + "=" + encodeURIComponent(params[key]) + "&";
 			}
 		}
+		str1 = uso.paramSerialize(params);
 		keys.sort();
-		str1 = str1.replace(/&$/, "");
 		str2 = keys.join("") + secret;
 		//log("str2: " + str2);
 		//log("str1: " + str1);
@@ -272,6 +282,54 @@ var Scrobbler = function(){
 		}
 	};
 	return fn;
+}();
+
+
+var lyr = function(){
+  var fn = function(title, artist, album){
+    log('lyric for ' + artist + '\'s ' + title + ' / ' + album + ' is getting..');
+    xhr({
+      method: 'POST',
+      url: 'http://www.viewlyrics.com:1212/searchlyrics.htm',
+      data: '<?xml version="1.0" encoding="utf-8"?><search filetype="lyrics" artist="' + artist + '" title="' + title + '" />',
+      onload: function (d){
+        var ele, lyrSrc = '';
+        d.responseXML = new DOMParser().parseFromString(d.responseText, "text/xml");
+        ele = d.responseXML.getElementsByTagName('fileinfo');
+        log(d.responseText);
+        for(var i = 0, l = ele.length; i < l; i++){
+          //lyrs[i] = {url: ele[i].getAttribute('link'), album: ele[i].getAttribute('album')};
+          if(album == ele[i].getAttribute('album')){
+            break;
+          }
+        }
+        if(l){
+          lyrSrc = ele[i==l?0:i].getAttribute('link');
+          log('lyrics link: ' + lyrSrc);
+          xhr({
+            method: 'GET',
+            url: lyrSrc,
+            overrideMimeType: 'text/plain; charset=gb2312',
+            onload: function(d){
+              log(123);
+              GM_log(d.responseText);
+              unsafeWindow.console && unsafeWindow.console.log(d.responseText);
+            },
+            onerror: function(){
+              log('some error occured..');
+            }
+          });
+        }else{
+          log('no lyrics for ' + title);
+        }
+        //alert(d.responseXML);
+      },
+      onerror: function (e){
+        log('error: ' + JSON.stringify(e));
+      }
+    });
+  };
+  return fn;
 }();
 
 //userscript 自动更新工具
@@ -370,7 +428,23 @@ var uso = {
       }
 		}
 		return 1;
-	}
+	},
+  paramSerialize: function(params){
+    var str = '';
+    for(var key in params){
+			if(params[key]){
+				str += encodeURIComponent(key) + "=" + encodeURIComponent(params[key]) + "&";
+			}
+		}
+    str = str.replace(/&$/, "");
+    return str;
+  },
+  clone: function(obj){
+    if(obj == null || typeof(obj) != 'object'){ return obj }
+    var temp = obj.constructor(); // changed
+    for(var key in obj){ temp[key] = arguments.callee(obj[key]) }
+    return temp;
+  }
 };
 
 

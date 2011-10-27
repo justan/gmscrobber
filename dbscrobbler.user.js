@@ -6,10 +6,9 @@ var meta = <><![CDATA[
 // @include        http://douban.fm/
 // @include        http://douban.fm/?*
 // @require        https://raw.github.com/justan/gmscrobber/master/simple_scrobbler_user.js
-// @require        ./lyrics.js
-// @version        0.1.5
+// @version        0.1.6
 // @uso:script     98833
-// @changelog      firefox5兼容及一个实验
+// @changelog      兼容Chrome + Tampermonkey; 跟进豆瓣长专辑名策略的更新
 // @initiative     true
 // ==/UserScript==
 ]]></>.toString();
@@ -33,11 +32,11 @@ var douban = function(){
 			song = o.song;
 			
 			song.album = song.albumtitle;
-			song.duration = song.len || 180;//如果没有时间，就3分钟吧
+			song.duration = song.len || 180;
 			
 			setTimeout(function(){
 				if(song.ssid == null || song.subtype == "T"){
-					log("广告, 略过...");
+					log("无效歌曲, 跳过...");
 					return;
 				}
 				var conn = "&";
@@ -46,7 +45,7 @@ var douban = function(){
 					if(/\.{3}$/.test(song.album)){
 						if(o.type == cmds.start){
 							song.album = "";
-							getAlbum(song.aid, function(at){
+							getAlbum(song.album, function(at){
 								sc.song.album = at;
 								log("一个省略的专辑名...新的专辑名是: " + at);
 							});
@@ -110,8 +109,8 @@ var douban = function(){
 		};
 	},
 	sc = new Scrobbler({name: "豆瓣电台", type: 1, ready: ready}),
-	getAlbum = function(id, cb){
-		var url = "http://api.douban.com/music/subject/" + id + "?alt=json";
+	getAlbum = function(info, cb){
+		var url = "http://api.douban.com/music" + info.replace(/\/$/, '') + "?alt=json";
 		xhr({
 			method: "GET",
 			url: url,
