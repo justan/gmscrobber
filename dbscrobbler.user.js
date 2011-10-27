@@ -62,6 +62,7 @@ var douban = function(){
 						}
 					}
 					song.artist = song.artist.join(conn);
+          song._doubanuname = unsafeWindow.$("#fm-user").text();
 					sc.nowPlaying(song);
 					sc.getInfo(song, function(p){
 						log(JSON.stringify(p));
