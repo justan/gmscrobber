@@ -102,7 +102,7 @@ var Scrobbler = function(){
       }
       xhr({
         method: 'GET',
-        url: meta.namespace + path + query
+        url: meta.namespace.replace('\/', '') + path + query
       });
     },
 		scrobble: function(song){
@@ -190,6 +190,7 @@ var Scrobbler = function(){
       rt = (Math.min(that.song.duration*this.scrate, 240) - rpt)*1000;//remain time
 			if(!this.type && !this.info.iscrobble){
 				clearTimeout(_timer);
+        log('will scrobbler in: ' + rt/1000 + ' seconds')
 				_timer = setTimeout(function(){that.scrobble()}, rt);
 			}
 		},
@@ -444,7 +445,21 @@ var uso = {
     var temp = obj.constructor(); // changed
     for(var key in obj){ temp[key] = arguments.callee(obj[key]) }
     return temp;
-  }
+  },
+  watchContent: (function(){
+    var timers = {};
+    var fn = function(node, handler, time){
+      var timer = setInterval(function(){
+        var newcontent = node.innerHTML;
+        if(newcontent !== timers[timer].content){
+          handler(node, timers[timer].content, newcontent);
+          timers[timer].content = newcontent;
+        }
+      }, time || 100);
+      timers[timer] = {handler: handler, content: node.innerHTML};
+    };
+    return fn;
+  })()
 };
 
 
