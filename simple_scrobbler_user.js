@@ -221,7 +221,7 @@ var Scrobbler = function(){
 	};
 	
 	fn.redirect = function(){
-		document.location = "http://www.last.fm/api/auth/?api_key=" + apikey + "&cb=" + encodeURIComponent(document.location.href);
+		document.location = "http://www.last.fm/api/auth/?api_key=" + apikey + "&cb=" + encodeURIComponent(document.location.href.replace(/^https/,'http'));
 	};
 	fn.ajax = function(params, callback, auth){
 		var method = "POST",
