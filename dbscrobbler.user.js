@@ -6,10 +6,10 @@ var meta = <><![CDATA[
 // @include        http://douban.fm/
 // @include        http://douban.fm/?*
 // @require        https://raw.github.com/justan/gmscrobber/master/simple_scrobbler_user.js
-// @version        0.1.6
+// @version        0.1.7
 // @uso:script     98833
-// @changelog      兼容Chrome + Tampermonkey; 跟进豆瓣长专辑名策略的更新
-// @initiative     true
+// @changelog      修正豆瓣长专辑名缺失问题
+// @initiative     false
 // ==/UserScript==
 ]]></>.toString();
 
@@ -26,11 +26,12 @@ var douban = function(){
 			return;
 		}
 		unsafeWindow.extStatusHandler = function(info){
-			var song, album, o = info;
+			var song, albuminfo, o = info;
 			log(o);
 			o = JSON.parse(o);
 			song = o.song;
 			
+      albuminfo = song.album;
 			song.album = song.albumtitle;
 			song.duration = song.len || 180;
 			
@@ -44,8 +45,8 @@ var douban = function(){
 				case cmds.start:
 					if(/\.{3}$/.test(song.album)){
 						if(o.type == cmds.start){
-							song.album = "";
-							getAlbum(song.album, function(at){
+							//song.album = "";
+							getAlbum(albuminfo, function(at){
 								sc.song.album = at;
 								log("一个省略的专辑名...新的专辑名是: " + at);
 							});

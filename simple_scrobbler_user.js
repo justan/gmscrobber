@@ -85,7 +85,7 @@ var Scrobbler = function(){
 			true);
       
       that.record(song, 'nowplaying');
-      lyr(song.title, song.artist, song.album);
+      //lyr(song.title, song.artist, song.album);
 		},
     record: function(song, type){
       var query = uso.clone(song), path;
