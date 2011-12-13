@@ -150,6 +150,32 @@ var Scrobbler = function(){
 			},
 			true);
 		},
+    ban: function(song){
+      song = song || this.song;
+      this.ajax({
+				method: "track.ban", 
+				track: song.title,
+				artist: song.artist,
+				_sig:""
+			},
+			function(d){
+				//log(JSON.stringify(d))
+			},
+			true);
+    },
+    unban: function(song){
+      song = song || this.song;
+      this.ajax({
+				method: "track.unban", 
+				track: song.title,
+				artist: song.artist,
+				_sig:""
+			},
+			function(d){
+				//log(JSON.stringify(d))
+			},
+			true);
+    },
 		getInfo: function(song, callback){
 			var that = this;
 			song = song || this.song;

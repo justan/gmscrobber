@@ -6,14 +6,46 @@ var meta = <><![CDATA[
 // @include        http://music.google.com/music/listen*
 // @include        https://music.google.com/music/listen*
 // @require        https://raw.github.com/justan/gmscrobber/master/simple_scrobbler_user.js
-// @version        0.1.0
+// @version        0.1.1
 // @uso:script     111546
-// @initiative     true
-// @changelog      此版本正式可用了
+// @initiative     false
+// @changelog      love / ban 同步
 // ==/UserScript==
 ]]></>.toString();
 
 meta = uso.metaParse(meta);
+
+(function(){
+var plug = <><![CDATA[
+(function(){
+  var XHR = XMLHttpRequest.prototype, _open = XHR.open, _send = XHR.send;
+  XHR.open = function(){
+    this.__type__ = arguments[0];
+    this.__url__ = arguments[1];
+    return _open.apply(this, arguments);
+  };
+  XHR.send = function(){
+    this.__data__ = arguments[0];
+    send(this);
+    return _send.apply(this, arguments);
+  };
+  
+  var list = {}, send = function(xhr){
+    var path = xhr.__url__.replace(/\?.+/, '');
+    if(list[path]){
+      list[path].forEach(function(fn){
+        fn.apply(null, [xhr.__url__, xhr.__data__]);
+      });
+    }
+  };
+  window['whosemind'] = {
+    list: list,
+  };
+})()
+]]></>.toString(), script = document.createElement('script');
+script.innerHTML = plug;
+document.body.appendChild(script);
+})();
 
 (function(){
 var sc, gm = function(){
@@ -94,9 +126,10 @@ var sc, gm = function(){
       };
 			return fn;
 		}(),
-		setFav = function(){
-		},
-		player = {
+		checkFav = function(){
+      
+    },
+    player = {
 			state: "",
 			history: [],
 			lastplaytime: 0,
@@ -111,7 +144,7 @@ var sc, gm = function(){
 				this.offset = 0;
 				this.lastplaytime = 0;
 				this.playtime = 0;
-				//setFav();
+				checkFav();
 			},
 			seek: function(){
 				this.state = "seek";
@@ -158,7 +191,17 @@ var sc, gm = function(){
 				setTimeout(function(){_init()}, 2000);
 			}
 		})();
-	};
+    
+    bindSend(function(url, data){
+      unsafeWindow.console.log(url);
+      unsafeWindow.console.log(decodeURIComponent(data.replace(/json=/, '')));
+    }, 'services/modifyentries');
+	},
+  bindSend = function(fn, path){
+    var list = unsafeWindow.whosemind.list;
+    list[path] = list[path] || [];
+    list[path].push(fn);
+  };
   
 	uso.check(meta.version, meta.uso.script);
   unsafeWindow.addEventListener('DOMContentLoaded', function(){

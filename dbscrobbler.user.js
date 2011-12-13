@@ -20,7 +20,7 @@ uso.check(meta.version, meta.uso.script);
 var douban = function(){
 	var ready = function(){
 		var ex = unsafeWindow.extStatusHandler,
-			cmds = {start:"start", end:"e", next:"s", like: "r", unlike: "u"};
+			cmds = {start:"start", end:"e", next:"s", like: "r", unlike: "u", ban: 'b'};
 			
 		if(!sc.sk){
 			return;
