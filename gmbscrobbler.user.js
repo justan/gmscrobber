@@ -9,7 +9,7 @@ var meta = <><![CDATA[
 // @version        0.1.1
 // @uso:script     111546
 // @initiative     false
-// @changelog      love / ban 同步
+// @changelog      love 同步
 // ==/UserScript==
 ]]></>.toString();
 
@@ -126,8 +126,10 @@ var sc, gm = function(){
       };
 			return fn;
 		}(),
-		checkFav = function(){
-      
+		checkFav = function(song){
+      sc.getInfo(song, function(info){
+        document.getElementById('playerSongInfo').title = '在 last.fm 中已记录: ' + info.len + '次';
+      });
     },
     player = {
 			state: "",
@@ -144,7 +146,7 @@ var sc, gm = function(){
 				this.offset = 0;
 				this.lastplaytime = 0;
 				this.playtime = 0;
-				checkFav();
+				checkFav(song);
 			},
 			seek: function(){
 				this.state = "seek";
@@ -167,7 +169,7 @@ var sc, gm = function(){
 			},
 			buffer: function(){
         log('buffer..');
-				this.pause();
+				sc.pause();
 				this.state = "buffer";
 			},
 			stop: function(){
@@ -193,8 +195,27 @@ var sc, gm = function(){
 		})();
     
     bindSend(function(url, data){
-      unsafeWindow.console.log(url);
-      unsafeWindow.console.log(decodeURIComponent(data.replace(/json=/, '')));
+      var d = decodeURIComponent(data.replace(/json=/, '')),
+        info = JSON.parse(d), entries = info.entries, rate, song = {}, _ele;
+      if(entries.length == 1 && !entries[0].creationDate){//rate
+        log(d);
+        rate = entries[0].rating;
+        id = entries[0].id;
+        _ele = document.getElementById('songs-all_' + id);
+        song.title = _ele.children[0].firstChild.title;
+        song.artist = _ele.children[2].firstChild.title;
+        setTimeout(function(){
+          switch(rate){
+          case 0:
+          case 1:
+            sc.unlove(song);
+            break;
+          case 5:
+            sc.love(song);
+            break;
+          }
+        }, 0);
+      }
     }, 'services/modifyentries');
 	},
   bindSend = function(fn, path){
