@@ -311,11 +311,14 @@ var Scrobbler = function(){
 	return fn;
 }();
 
-
+/**
+ * 歌词查询
+ */
 var lyr = function(){
+  //TODO 待找个合适的歌词数据库
   var fn = function(title, artist, album){
     log('lyric for ' + artist + '\'s ' + title + ' / ' + album + ' is getting..');
-    xhr({
+    0 && xhr({
       method: 'POST',
       url: 'http://www.viewlyrics.com:1212/searchlyrics.htm',
       data: '<?xml version="1.0" encoding="utf-8"?><search filetype="lyrics" artist="' + artist + '" title="' + title + '" />',

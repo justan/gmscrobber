@@ -10,6 +10,7 @@ var meta = <><![CDATA[
 // @uso:script     92863
 // @changelog      firefox5兼容及一个实验
 // @initiative     true
+// @updateURL      http://userscripts.org/scripts/source/92863.meta.js
 // ==/UserScript==
 ]]></>.toString();
 

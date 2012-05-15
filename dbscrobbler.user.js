@@ -10,6 +10,7 @@ var meta = <><![CDATA[
 // @uso:script     98833
 // @changelog      修正豆瓣长专辑名缺失问题
 // @initiative     false
+// @updateURL      http://userscripts.org/scripts/source/98833.meta.js
 // ==/UserScript==
 ]]></>.toString();
 
@@ -126,9 +127,9 @@ var douban = function(){
 	};
 };
 
-unsafeWindow.Do('douban', 'counter', 'coverflow', function() {
+unsafeWindow.Do.ready(function() {
 	setTimeout(function(){
 		unsafeWindow.extStatusHandler ? douban() : log("init error");
-	}, 0);
+	}, 1000);
 });
 })();
