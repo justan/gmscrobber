@@ -9,7 +9,7 @@ var meta = <><![CDATA[
 // @version        0.1.8
 // @uso:script     98833
 // @changelog      follow 豆瓣初始化方法
-// @initiative     false
+// @initiative     true
 // @updateURL      http://userscripts.org/scripts/source/98833.meta.js
 // ==/UserScript==
 ]]></>.toString();
