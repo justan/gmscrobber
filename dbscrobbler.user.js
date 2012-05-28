@@ -6,9 +6,9 @@ var meta = <><![CDATA[
 // @include        http://douban.fm/
 // @include        http://douban.fm/?*
 // @require        https://raw.github.com/justan/gmscrobber/master/simple_scrobbler_user.js
-// @version        0.1.7
+// @version        0.1.8
 // @uso:script     98833
-// @changelog      修正豆瓣长专辑名缺失问题
+// @changelog      follow 豆瓣初始化方法
 // @initiative     false
 // @updateURL      http://userscripts.org/scripts/source/98833.meta.js
 // ==/UserScript==
@@ -30,14 +30,14 @@ var douban = function(){
 			var song, albuminfo, o = info;
 			log(o);
 			o = JSON.parse(o);
-			song = o.song;
+			song = o.song || {};
 			
       albuminfo = song.album;
 			song.album = song.albumtitle;
 			song.duration = song.len || 180;
 			
 			setTimeout(function(){
-				if(song.ssid == null || song.subtype == "T"){
+				if(!song.ssid || song.subtype == "T"){
 					log("无效歌曲, 跳过...");
 					return;
 				}
@@ -130,6 +130,6 @@ var douban = function(){
 unsafeWindow.Do.ready(function() {
 	setTimeout(function(){
 		unsafeWindow.extStatusHandler ? douban() : log("init error");
-	}, 1000);
+	}, 0);
 });
 })();
