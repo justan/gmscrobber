@@ -15,19 +15,29 @@ var Scrobbler = function(){
 		scrate = .9,
 		tokenreg = /[?&]token=(\w{32})/,
 		_timer, _shift;
-	// info.type 1: 手动调用scrobble记录歌曲; 0(缺省): 根据播放起始时间和持续时间自动记录歌曲
+    
+  /**
+   * Scrobbler
+   * @constructor
+   * @param {Object} info 该页面 scrobbler 信息
+   * @param {Number} info.type 1: 手动调用scrobble记录歌曲; 
+           0(缺省): 在调用 nowplaying 后根据播放时间自动调用 scrobble 记录歌曲
+   * @param {String} info.name 该 scrobbler 名字, 会显示在 greasemonkey 菜单中
+   * @param {Function} info.ready 回调. scrobbler sessionid 取得后会调用此函数.
+   * @param {Number} [info.scrate] 自动记录的百分比, info.typt == 1 时无效
+   */
 	var fn = function(info){
 		this.type = info.type;
 		this.name = info.name || "";
 		this.ready = info.ready || function(){};
 		this.scrate = info.scrate || scrate;
-		this.init(this);
+		this.init();
 	};
 	fn.prototype = {
-		init: function(that){
+		init: function(){
 			var sk = getVal("session"),
 				token = document.location.search.match(tokenreg);
-			that = that || this;
+			that = this;
       token = token && token[1];
 			
 			log(sk + "\n" + token + "\n" + document.location.href);
@@ -63,7 +73,16 @@ var Scrobbler = function(){
 		},
 		
 	//song's command
-		nowPlaying: function(song, duration){
+  
+    /**
+     * 向 last.fm 发送正在播放请求
+     * @param {Object} song 歌曲信息
+     * @param {String} song.title 曲名
+     * @param {String} song.artist 歌手(多个歌手用 & 连接)
+     * @param {String} song.duration 时长. 单位: 秒
+     * @param {String} song.album 专辑名
+     */
+		nowPlaying: function(song){
 			var that = this;
 			this.song = song; //song: {title: "", artist: "", duration: "", album: ""}
 			this.timestamp = Math.floor(new Date().getTime()/1000);
@@ -75,7 +94,7 @@ var Scrobbler = function(){
 				method: "track.updateNowPlaying", 
 				track: song.title,
 				artist: song.artist,
-				duration: duration || song.duration,
+				duration: song.duration,
 				album: song.album,//
 				_sig:""
 			},
@@ -87,6 +106,8 @@ var Scrobbler = function(){
       that.record(song, 'nowplaying');
       //lyr(song.title, song.artist, song.album);
 		},
+    
+    //
     record: function(song, type){
       var query = uso.clone(song), path;
       query.source = document.location.host;
@@ -105,6 +126,11 @@ var Scrobbler = function(){
         url: meta.namespace.replace('\/', '') + path + query
       });
     },
+    
+    /**
+     * 向 last.fm 发送正在记录请求
+     * @param {Object} song 歌曲信息
+     */
 		scrobble: function(song){
 			var that = this;
 			song = song || this.song;
@@ -405,7 +431,13 @@ var uso = {
 
 	  return headers;
 	},
-	check: function(ver, id, cb){
+	/**
+   * 自动升级工具
+   * @param {String} ver 当前版本号
+   * @param {String} id userscript.org 上的编号
+   * @param {Function} cb 检测结果回调
+   */
+  check: function(ver, id, cb){
 		var that = this, self = arguments.callee, flag = false;
 		xhr({
 		  method:"GET",
@@ -475,6 +507,12 @@ var uso = {
     for(var key in obj){ temp[key] = arguments.callee(obj[key]) }
     return temp;
   },
+  /**
+   * 监控页面元素文字变化
+   * @param {Object} node 要监控的元素
+   * @param {Function} node 文字变化后的回调函数
+   * @param {Number} [time] 监控定时器的间隙时间
+   */
   watchContent: (function(){
     var timers = {};
     var fn = function(node, handler, time){
