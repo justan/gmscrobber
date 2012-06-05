@@ -80,7 +80,7 @@ var Scrobbler = function(){
      * @param {String} song.title 曲名
      * @param {String} song.artist 歌手(多个歌手用 & 连接)
      * @param {String} song.duration 时长. 单位: 秒
-     * @param {String} song.album 专辑名
+     * @param {String} [song.album] 专辑名
      */
 		nowPlaying: function(song){
 			var that = this;
@@ -129,7 +129,7 @@ var Scrobbler = function(){
     
     /**
      * 向 last.fm 发送正在记录请求
-     * @param {Object} song 歌曲信息
+     * @param {Object} [song] 歌曲信息. 当nowPlaying中的歌曲信息不全时, 应在此补全. last.fm 的播放记录以此为准
      */
 		scrobble: function(song){
 			var that = this;
@@ -150,7 +150,10 @@ var Scrobbler = function(){
 			true);
       that.record(song, 'scrobble');
 		},
-		love: function(song){
+		/** love
+     * @param {Object} [song] 歌曲信息. 事实上你可以听得是一首歌, love 的却是另一首
+     */
+    love: function(song){
 			song = song || this.song;			
 			this.ajax({
 				method: "track.love", 
@@ -232,6 +235,11 @@ var Scrobbler = function(){
 		},
 		
 	//play control
+    /**
+     * 开始播放. 从所有停止状态开始播放, 都应该调用此函数
+     * @param {Number} [realPlayTime] 播放时校正. 
+        当一首歌暂停次数太多的时候, 记录的播放时间可能会有误差, 传入 realPlayTime 即可校正播放的时间
+     */
 		play: function(realPlayTime){
 			var that = this, rpt = realPlayTime, rt;
 			this.state = "play";
@@ -251,7 +259,7 @@ var Scrobbler = function(){
 			this.state = "pause";
 		},
 		buffer: function(){
-			//this.pause();
+			this.pause();
 			this.state = "buffer";
 		},
 		stop: function(){
@@ -338,7 +346,7 @@ var Scrobbler = function(){
 }();
 
 /**
- * 歌词查询
+ * 歌词查询. 待完成
  */
 var lyr = function(){
   //TODO 待找个合适的歌词数据库
