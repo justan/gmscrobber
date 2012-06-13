@@ -3,8 +3,8 @@ var meta = <><![CDATA[
 // @name           google music scrobbler
 // @namespace      http://gmscrobber.whosemind.net
 // @description    记录 google music beta 到 last.fm
-// @include        http://music.google.com/music/listen*
-// @include        https://music.google.com/music/listen*
+// @include        http://play.google.com/music/listen*
+// @include        https://play.google.com/music/listen*
 // @require        https://raw.github.com/justan/gmscrobber/master/simple_scrobbler_user.js
 // @version        0.1.1
 // @uso:script     111546
@@ -189,7 +189,7 @@ var sc, gm = function(){
         
         listener();
 			}else{
-        log('nothing play');
+        //log('nothing play');
 				setTimeout(function(){_init()}, 2000);
 			}
 		})();
