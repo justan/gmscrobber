@@ -3,6 +3,7 @@
 // @namespace   http://gmscrobber.whosemind.net
 // @description 记录qq在线音乐到 last.fm
 // @match       http://y.qq.com/*
+// @exclude     http://y.qq.com/y/static/index.html
 // @require     https://raw.github.com/justan/gmscrobber/master/simple_scrobbler_user.js
 // @version     0.0.1
 // ==/UserScript==
