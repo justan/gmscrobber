@@ -30,9 +30,13 @@ var qmusicWatch = function(){
     var songinfo = document.getElementById('divsonginfo');
     song.title = songinfo.getElementsByClassName('music_name')[0].title;
     song.artist = songinfo.getElementsByClassName('singer_name')[0].title;
-    song.duration = document.getElementById('ptime').innerHTML;
+    song.duration = timeParse(document.getElementById('ptime').innerHTML);
     song.album = songinfo.getElementsByClassName('album_pic')[0].title;
     return song;
+  };
+  var timeParse = function(timeStr){
+    var ts = timeStr.split(':');
+    return ts[0] * 60 + ts[1] * 1;
   };
   return fn;
 }();
