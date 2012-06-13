@@ -6,3 +6,12 @@
 // @require     https://raw.github.com/justan/gmscrobber/master/simple_scrobbler_user.js
 // @version     0.0.1
 // ==/UserScript==
+
+var init = function(){
+  log('init');
+};
+
+var scrobber = new Scrobbler({
+  name: 'QQ 音乐',
+  ready: init
+});
