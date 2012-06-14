@@ -21,6 +21,12 @@ var init = function(){
       scrobber.seek(offset);
     }, 0);
   }, true);
+  
+  scrobber.on('nowplaying', function(){
+    scrobber.getInfo(scrobber.song, function(info){
+      document.getElementById('divplayer').title = '在 last.fm 中记录: ' + info.len + ' 次';
+    });
+  });
 };
 
 var scrobber = new Scrobbler({
