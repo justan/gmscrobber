@@ -199,7 +199,7 @@ var Scrobbler = function(){
 				log(song.artist + "'s " + song.title + " / " + song.album + " scrobbled..");
 			},
 			true);
-      that.record(song, 'scrobble');
+      typeof meta != 'undefined' && that.record(song, 'scrobble');
       this.fire('scrobble');
 		},
 		/** love
