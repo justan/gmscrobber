@@ -12,9 +12,26 @@
 
 var init = function(){
   log('init');
+  scrobber.setSongInfoFN(getSongInfo, {checktime: 4000});
 };
 
 var scrobber = new Scrobbler({
   name: 'QQ 音乐',
   ready: init
 });
+
+var getSongInfo = function(){
+  var song = {};
+  var songinfo = document.getElementById('divsonginfo');
+  song.title = songinfo.getElementsByClassName('music_name')[0].title;
+  song.artist = songinfo.getElementsByClassName('singer_name')[0].title;
+  song.duration = timeParse(document.getElementById('ptime').innerHTML);
+  song.playTime = song.duration * document.getElementById('spanplaybar').style.width.replace(/%/, '') / 100;
+  song.album = songinfo.getElementsByClassName('album_pic')[0].title;
+  return song;
+};
+
+var timeParse = function(timeStr){
+  var ts = timeStr.split(':');
+  return ts[0] * 60 + ts[1] * 1;
+};
