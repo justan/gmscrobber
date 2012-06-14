@@ -22,6 +22,21 @@ var init = function(){
     }, 0);
   }, true);
   
+  //TO love sycn
+  var likes = document.getElementsByClassName('btn_like');
+  for(var i = 0, l = likes.length; i < l; i++){
+    likes[i].addEventListener('click', function(e){
+      //scrobber.love();
+    }, false);
+  }
+  
+  var unlikes = document.getElementsByClassName('btn_like');
+  for(var i = 0, l = unlikes.length; i < l; i++){
+    unlikes[i].addEventListener('click', function(e){
+      //scrobber.unlove();
+    }, false);
+  }
+      
   scrobber.on('nowplaying', function(){
     scrobber.getInfo(scrobber.song, function(info){
       document.getElementById('divplayer').title = '在 last.fm 中记录: ' + info.len + ' 次';
