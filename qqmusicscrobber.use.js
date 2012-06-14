@@ -13,6 +13,14 @@
 var init = function(){
   log('init');
   scrobber.setSongInfoFN(getSongInfo, {checktime: 4000});
+  document.getElementsByClassName('player_bar')[0].addEventListener('click', function(e){
+    var oldTime = getSongInfo().playTime;
+    setTimeout(function(){
+      var newTime = getSongInfo().playTime;
+      offset = oldTime - newTime;
+      scrobber.seek(offset);
+    }, 0);
+  }, true);
 };
 
 var scrobber = new Scrobbler({
