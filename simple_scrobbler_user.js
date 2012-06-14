@@ -62,6 +62,14 @@ var Scrobbler = function(){
 			}else{
 				rmc("开始记录" + that.name, fn.redirect);
 			}
+      this.listeners = {
+        nowplaying: [],
+        scrobble: [],
+        love: [],
+        unlove: [],
+        ban: [],
+        unban: []
+      };
 		},
 		
 		getSession: function(){
@@ -147,6 +155,7 @@ var Scrobbler = function(){
       
       typeof meta != 'undefined' && that.record(song, 'nowplaying');
       //lyr(song.title, song.artist, song.album);
+      this.fire('nowplaying');
 		},
     
     //
@@ -191,6 +200,7 @@ var Scrobbler = function(){
 			},
 			true);
       that.record(song, 'scrobble');
+      this.fire('scrobble');
 		},
 		/** love
      * @param {Object} [song] 歌曲信息. 事实上你可以听得是一首歌, love 的却是另一首
@@ -207,6 +217,7 @@ var Scrobbler = function(){
 				//log(JSON.stringify(d))
 			},
 			true);
+      this.fire('love');
 		},
 		unlove: function(song){
 			song = song || this.song;
@@ -220,6 +231,7 @@ var Scrobbler = function(){
 				//log(JSON.stringify(d))
 			},
 			true);
+      this.fire('unlove');
 		},
     ban: function(song){
       song = song || this.song;
@@ -233,6 +245,7 @@ var Scrobbler = function(){
 				//log(JSON.stringify(d))
 			},
 			true);
+      this.fire('ban');
     },
     unban: function(song){
       song = song || this.song;
@@ -246,6 +259,7 @@ var Scrobbler = function(){
 				//log(JSON.stringify(d))
 			},
 			true);
+      this.fire('unban');
     },
 		getInfo: function(song, callback){
 			var that = this;
@@ -309,7 +323,9 @@ var Scrobbler = function(){
 			this.state = "stop";
 		},
 		seek: function(offset){
+      this.state = "seek";
 			this.info.offset += offset;
+      log('seek, offset: ' + offset + ', totle offset: ' + this.info.offset);
 		},
 		
 		ajax: function(params, callback, auth){
@@ -320,6 +336,29 @@ var Scrobbler = function(){
 			}
 			fn.ajax(params, callback, auth);
 		},
+    
+    on: function(event, handler){
+      this.listeners[event] = this.listeners[event] || [];
+      this.listeners[event].push(handler);
+    },
+    off: function(event, handler){
+      var listeners = this.listeners[event] || [];
+      if(handler){
+        for(var i = 0, l = listeners.length; i < l; i++){
+          if(handler == listeners[i]){
+            delete listeners[i];
+          }
+        }
+      }else{
+        delete this.listeners[event];
+      }
+    },
+    fire: function(event){
+      var listeners = this.listeners[event] || [];
+      for(var i = 0, l = listeners.length; i < l; i++){
+        listeners[i].call(this);
+      }
+    }
 	};
 	
 	fn.redirect = function(){
