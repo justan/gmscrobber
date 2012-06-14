@@ -24,7 +24,7 @@ var Scrobbler = function(){
            0(缺省): 在调用 nowplaying 后根据播放时间自动调用 scrobble 记录歌曲
    * @param {String} info.name 该 scrobbler 名字, 会显示在 greasemonkey 菜单中
    * @param {Function} info.ready 回调. scrobbler sessionid 取得后会调用此函数.
-   * @param {Number} [info.scrate] 自动记录的百分比, info.typt == 1 时无效
+   * @param {Number} [info.scrate] 自动记录的百分比, info.type == 1 时无效
    */
 	var fn = function(info){
 		this.type = info.type;
@@ -71,6 +71,48 @@ var Scrobbler = function(){
 			delVal("session");
 			document.location = document.location.href.replace(tokenreg, "");
 		},
+    /**
+     * 定期检查页面歌曲信息变化. 将歌曲信息获取函数传给此函数, 即可自动完成歌曲的记录.
+     * @param {Function} getSongInfo 各页面脚本的歌曲信息获取函数.
+        应该返回歌曲信息: {title: '', artist: '', duration: 0, playTime: '', album: ''}
+     * @param {Object} opts 
+     * @param {Nunber} opts.checktime 定时器周期, 毫秒
+     */
+    setSongInfoFN: (function(){
+      var fn = function(getSongInfo, opts){
+        opts = opts || {};
+        var info = {}, that = this;
+        setInterval(function(){
+          try{
+            info = getSongInfo();
+            infoChecker.call(that, info);
+          }catch(e){
+            log(e.stack);
+          }
+        }, opts.checktime || 2000);
+      };
+      var oldSong = {};
+      var infoChecker = function(song){
+        var songstr = JSON.stringify(song);
+        if(song.title && song.artist && song.duration){
+          //log(songstr)
+          //log(JSON.stringify(oldSong))
+          if(song.title != oldSong.title || song.artist != oldSong.artist || song.duration != oldSong.duration){
+            this.nowPlaying(song);
+          }else{
+            //log(this.state)
+            if(song.playTime != oldSong.playTime && this.state != 'play'){
+              this.play(song.playTime + this.info.offset);
+            }else if(song.playTime == oldSong.playTime && (this.state != 'buffer' || this.state != 'pause')){
+              this.buffer();
+            }
+          }
+        }
+        
+        oldSong = uso.clone(song);
+      };
+      return fn;
+    })(),
 		
 	//song's command
   
@@ -103,7 +145,7 @@ var Scrobbler = function(){
 			},
 			true);
       
-      that.record(song, 'nowplaying');
+      typeof meta != 'undefined' && that.record(song, 'nowplaying');
       //lyr(song.title, song.artist, song.album);
 		},
     
