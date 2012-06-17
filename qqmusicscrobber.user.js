@@ -35,7 +35,8 @@ var init = function(){
       document.getElementById('divplayer').title = '在 last.fm 中记录: ' + info.len + ' 次';
       //同步 last.fm 红星歌曲到 qq music
       if(info.islove == '1' && loveEle.title == '喜欢' || info.islove == '0' && loveEle.title == '取消喜欢'){
-        unsafeWindow.g_topPlayer.like(null, loveEle, unsafeWindow.g_topPlayer.getCurSongInfo());
+        //unsafeWindow.g_topPlayer.like(null, loveEle, unsafeWindow.g_topPlayer.getCurSongInfo());
+        document.getElementsByClassName('music_op')[0].children[0].click();
       }
     });
   });
