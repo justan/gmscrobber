@@ -1,6 +1,6 @@
 # [GMscrobber](http://justan.github.com/gmscrobber/) - Scrobble Anywhere
 
-> 对于一些人来说, 如果不能记录, 听歌似乎失去了原来的意义.
+>某个时候听了某个音乐，因此自己心中的什么，发生了很大的变化…之类的
 
 gmscrobber 的目标是提供一种简单的方法来将在线播放的音乐记录到 [last.fm](http://last.fm).
 安装 gmscrobber 需要 [greasemonkey](http://www.greasespot.net/) 或者兼容环境(如 chrome + Tampermonkey 或 firefox + greasemonkey)
@@ -9,14 +9,14 @@ gmscrobber 的目标是提供一种简单的方法来将在线播放的音乐记
   
   * 安全. 使用 last.fm 2.0 API 的 [WEB Authentication ](http://cn.last.fm/api/webauth). 用户只在last.fm官方网站上输入用户名密码.
   * 非侵入式. 和原来的页面融为一体, 就像它原来就在那里.
-  * 内置自动升级模块. 紧急升级的时候可以选择主动提示用户升级. 同时支持官方的 `@updateURL`.
+  * 内置自动升级模块. 紧急升级的时候可以选择主动提示用户升级.
   * 追求完美. 不想随便就记录一首歌曲? 对于开发者, GMscrobber 提供了精确的[歌曲控制](#歌曲控制相关)方法, 想让在 80% 时记录, 就不会在 79% 时记录.
   * 红星同步, 无视豆瓣电台广告...
   * 程序内可停止使用:>
   * 歌词支持(待完成).
 
 ## 网站支持
-目前支持的网站有: [豆瓣电台](http://douban.fm/), [谷歌音乐](http://g.top100.cn/16667639/html/player.html#loaded), [Google Music](http://music.google.com)
+目前支持的网站有: [豆瓣电台](http://douban.fm/), [谷歌音乐](http://g.top100.cn/16667639/html/player.html#loaded), [Google Music](http://music.google.com), [QQ 音乐](http://music.qq.com)
 
 ## 编写你自己的 scrobbler
 使用 GMscrobber 将使编写你自己的 scrobbler 变得非常简单, 如果已有 javascript 和 userscript 的编写经验, 写一个 scrobbler 只需要以下几步: 
@@ -47,7 +47,7 @@ gmscrobber 的目标是提供一种简单的方法来将在线播放的音乐记
 ### 关于页面播放器监控
 目前有两种办法监控页面的播放状态:
   
-  1. 最为普遍的, 我们并不清楚页面播放器的代码结构,  此种情况下可以设定时器监控页面歌曲信息变化. 示例如[谷歌音乐 scrobber](https://github.com/justan/gmscrobber/blob/master/gmscrobbler.user.js).
+  1. 最为普遍的, 我们并不清楚页面播放器的代码结构, 此种情况下可以编写一个页面歌曲信息获取函数, 将其传给  `scrobber.setSongInfoFN`, 剩下的 gmscrobber 会聪明的处理好. 示例: [QQ 音乐 scrobber](https://github.com/justan/gmscrobber/blob/master/qqmusicscrobber.user.js).
   2. 在页面播放器有可访问的播放状态变化函数的时候, 可以选择重新封装该函数. 如[豆瓣电台 scrobber](https://github.com/justan/gmscrobber/blob/master/dbscrobbler.user.js): 
   
     ```javascript
@@ -57,7 +57,10 @@ gmscrobber 的目标是提供一种简单的方法来将在线播放的音乐记
       return ex.apply(this, arguments);
     };
     ```
-    
+### scrobber 编写教程
+
+  * [怎样记录 QQ 音乐到 last.fm](http://blog.whosemind.net/blog/2012/06/15/zen-yang-ji-lu-qqyin-le-dao-last-dot-fm/)
+  
 ## API
 在脚本中 require *simple_scrobbler_user* 后, 将得到两个有效接口:
 
@@ -101,3 +104,4 @@ gmscrobber 的目标是提供一种简单的方法来将在线播放的音乐记
   * [豆瓣电台 scrobbler](https://userscripts.org/scripts/show/98833)
   * [谷歌音乐(g.cn/music) scrobbler](https://userscripts.org/scripts/show/92863)
   * [Google music scrobbler](https://userscripts.org/scripts/show/111546)
+  * [QQ 音乐](https://userscripts.org/scripts/show/136050)
