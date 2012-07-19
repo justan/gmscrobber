@@ -27,7 +27,7 @@ gmscrobber 的目标是提供一种简单的方法来将在线播放的音乐记
    // @require  https://raw.github.com/justan/gmscrobber/master/simple_scrobbler_user.js
    ```
    
-  2. 创建一个 Scrobber 示例: 
+  2. 创建一个 Scrobber 实例: 
   
    `var scrobber = new Scrobber({name: '在线音乐', ready: init})`
    
@@ -57,7 +57,8 @@ gmscrobber 的目标是提供一种简单的方法来将在线播放的音乐记
       return ex.apply(this, arguments);
     };
     ```
-### scrobber 编写教程
+    
+### scrobber 编写示例
 
   * [怎样记录 QQ 音乐到 last.fm](http://blog.whosemind.net/blog/2012/06/15/zen-yang-ji-lu-qqyin-le-dao-last-dot-fm/)
   
