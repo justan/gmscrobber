@@ -13,10 +13,22 @@ gmscrobber 的目标是提供一种简单的方法来将在线播放的音乐记
   * 追求完美. 不想随便就记录一首歌曲? 对于开发者, GMscrobber 提供了精确的[歌曲控制](#歌曲控制相关)方法, 想让在 80% 时记录, 就不会在 79% 时记录.
   * 红星同步, 无视豆瓣电台广告...
   * 程序内可停止使用:>
-  * 歌词支持(待完成).
+  * 歌词支持.
 
 ## 网站支持
-目前支持的网站有: [豆瓣电台](http://douban.fm/), [谷歌音乐](http://g.top100.cn/16667639/html/player.html#loaded), [Google Music](http://music.google.com), [QQ 音乐](http://music.qq.com)
+目前支持的网站有: [豆瓣电台](http://douban.fm/), [<del>谷歌音乐(已关闭)</del>](http://g.top100.cn/16667639/html/player.html#loaded), [Google Music](http://music.google.com), [QQ 音乐](http://music.qq.com)
+
+## 使用
+在网站上首次使用 gmscrobbler 需要 last.fm 的认证. 认证以后, 脚本会自动运行. 认证操作如下:
+
+  1. 安装用户脚本
+  2. 打开需要记录的音乐网站
+  3. 在 greasemonkey(或其他兼容扩展) 命令菜单中选中 "开始记录..."
+  4. 上一步会跳转到 last.fm 网站中进行认证. 确认后整个过程即已完成.
+  
+## 歌词
+通过 [@solos](https://github.com/solos) 的[歌词迷API]
+(http://api.geci.me/en/latest/index.html), gmscrobbler 也对正在收听的歌曲提供了简单的在线歌词. 输出在浏览器的 javascript 控制台中(如在 Firefox 中 ctrl + shift + j 打开).
 
 ## 编写你自己的 scrobbler
 使用 GMscrobber 将使编写你自己的 scrobbler 变得非常简单, 如果已有 javascript 和 userscript 的编写经验, 写一个 scrobbler 只需要以下几步: 

@@ -154,7 +154,7 @@ var Scrobbler = function(){
 			true);
       
       typeof meta != 'undefined' && that.record(song, 'nowplaying');
-      //lyr(song.title, song.artist, song.album);
+      lyr(song.title, song.artist, song.album);
       this.fire('nowplaying');
 		},
     
@@ -427,53 +427,44 @@ var Scrobbler = function(){
 }();
 
 /**
- * 歌词查询. 待完成
+ * 歌词查询
+ * 歌词 API 来源于 (@solos)[https://github.com/solos] 的(歌词迷)[http://api.geci.me/en/latest/index.html]
  */
 var lyr = function(){
-  //TODO 待找个合适的歌词数据库
   var fn = function(title, artist, album){
     log('lyric for ' + artist + '\'s ' + title + ' / ' + album + ' is getting..');
-    0 && xhr({
-      method: 'POST',
-      url: 'http://www.viewlyrics.com:1212/searchlyrics.htm',
-      data: '<?xml version="1.0" encoding="utf-8"?><search filetype="lyrics" artist="' + artist + '" title="' + title + '" />',
-      onload: function (d){
-        var ele, lyrSrc = '';
-        d.responseXML = new DOMParser().parseFromString(d.responseText, "text/xml");
-        ele = d.responseXML.getElementsByTagName('fileinfo');
-        log(d.responseText);
-        for(var i = 0, l = ele.length; i < l; i++){
-          //lyrs[i] = {url: ele[i].getAttribute('link'), album: ele[i].getAttribute('album')};
-          if(album == ele[i].getAttribute('album')){
-            break;
-          }
-        }
-        if(l){
-          lyrSrc = ele[i==l?0:i].getAttribute('link');
+    xhr({
+      method: 'GET',
+      url: 'http://geci.me/api/lyric/' + title + '/' + artist,
+      onload: function (res){
+        //log(res.responseText);
+        var lyrSrc = '';
+        res = JSON.parse(res.responseText);
+        
+        if(res.count){
+          lyrSrc = res.result[0].lrc;
           log('lyrics link: ' + lyrSrc);
           xhr({
             method: 'GET',
             url: lyrSrc,
-            overrideMimeType: 'text/plain; charset=gb2312',
+            //overrideMimeType: 'text/plain; charset=gb2312',
             onload: function(d){
-              log(123);
-              GM_log(d.responseText);
-              unsafeWindow.console && unsafeWindow.console.log(d.responseText);
+              fn.log(d.responseText);
             },
             onerror: function(){
-              log('some error occured..');
+              fn.log('some error occured..');
             }
           });
         }else{
-          log('no lyrics for ' + title);
+          fn.log('no lyrics for ' + title);
         }
-        //alert(d.responseXML);
       },
       onerror: function (e){
-        log('error: ' + JSON.stringify(e));
+        fn.log('搜索歌词失败! ' + JSON.stringify(e));
       }
     });
   };
+  fn.log = unsafeWindow.console.log;
   return fn;
 }();
 
