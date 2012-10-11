@@ -1,6 +1,6 @@
 safe: true
 lsi: false
-pygments: false
+pygments: true
 markdown: rdiscount
 
 projectName: Gmscrobber
