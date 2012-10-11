@@ -153,7 +153,7 @@ var Scrobbler = function(){
 			},
 			true);
       
-      typeof meta != 'undefined' && that.record(song, 'nowplaying');
+      //typeof meta != 'undefined' && that.record(song, 'nowplaying');
       lyr(song.title, song.artist, song.album);
       this.fire('nowplaying');
 		},
@@ -199,7 +199,7 @@ var Scrobbler = function(){
 				log(song.artist + "'s " + song.title + " / " + song.album + " scrobbled..");
 			},
 			true);
-      typeof meta != 'undefined' && that.record(song, 'scrobble');
+      //typeof meta != 'undefined' && that.record(song, 'scrobble');
       this.fire('scrobble');
 		},
 		/** love
