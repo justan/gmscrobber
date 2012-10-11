@@ -27,8 +27,7 @@ gmscrobber 的目标是提供一种简单的方法来将在线播放的音乐记
   4. 上一步会跳转到 last.fm 网站中进行认证. 确认后整个过程即已完成.
   
 ## 歌词
-通过 [@solos](https://github.com/solos) 的[歌词迷API]
-(http://api.geci.me/en/latest/index.html), gmscrobbler 也对正在收听的歌曲提供了简单的在线歌词. 输出在浏览器的 javascript 控制台中(如在 Firefox 中 ctrl + shift + j 打开).
+通过 [@solos](https://github.com/solos) 的[歌词迷API](http://api.geci.me/en/latest/index.html), gmscrobbler 也对正在收听的歌曲提供了简单的在线歌词. 输出在浏览器的 javascript 控制台中(如在 Firefox 中 ctrl + shift + j 打开).
 
 ## 编写你自己的 scrobbler
 使用 GMscrobber 将使编写你自己的 scrobbler 变得非常简单, 如果已有 javascript 和 userscript 的编写经验, 写一个 scrobbler 只需要以下几步: 
@@ -115,6 +114,6 @@ gmscrobber 的目标是提供一种简单的方法来将在线播放的音乐记
 ## [userscripts.org](https://userscripts.org/) 上的GMscrobber
 
   * [豆瓣电台 scrobbler](https://userscripts.org/scripts/show/98833)
-  * [谷歌音乐(g.cn/music) scrobbler](https://userscripts.org/scripts/show/92863)
+  * [<del>谷歌音乐(g.cn/music) scrobbler</del>](https://userscripts.org/scripts/show/92863)
   * [Google music scrobbler](https://userscripts.org/scripts/show/111546)
   * [QQ 音乐](https://userscripts.org/scripts/show/136050)
