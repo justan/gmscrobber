@@ -1,0 +1,15 @@
+safe: true
+lsi: false
+pygments: false
+markdown: rdiscount
+
+projectName: Gmscrobber
+projectUrl: https://github.com/justan/gmscrobber
+author: justan
+description: 记录在线音乐到last.fm
+
+# Google Analytics
+google_analytics_tracking_id: "UA-12642431-2"
+
+# Disqus Comments
+disqus_short_name: gmscrobber
