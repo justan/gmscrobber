@@ -464,7 +464,10 @@ var lyr = function(){
       }
     });
   };
-  fn.log = unsafeWindow.console.log;
+  fn.log = function(txt){
+    unsafeWindow.console && unsafeWindow.console.log(txt);
+    GM_log(txt);
+  };
   return fn;
 }();
 
