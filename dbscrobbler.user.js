@@ -10,7 +10,6 @@ var meta = <><![CDATA[
 // @uso:script     98833
 // @changelog      follow 豆瓣初始化方法
 // @initiative     true
-// @updateURL      http://userscripts.org/scripts/source/98833.meta.js
 // ==/UserScript==
 ]]></>.toString();
 
@@ -21,7 +20,7 @@ uso.check(meta.version, meta.uso.script);
 var douban = function(){
 	var ready = function(){
 		var ex = unsafeWindow.extStatusHandler,
-			cmds = {start:"start", end:"e", next:"s", like: "r", unlike: "u", ban: 'b'};
+			cmds = {start:"start", end:"e", next:"s", like: "r", unlike: "u", ban: 'b', pause: "pause", gotoplay: "gotoplay"};
 			
 		if(!sc.sk){
 			return;
@@ -37,7 +36,7 @@ var douban = function(){
 			song.duration = song.len || 180;
 			
 			setTimeout(function(){
-				if(!song.ssid || song.subtype == "T"){
+				if(song.ssid == null || song.subtype == "T"){
 					log("无效歌曲, 跳过...");
 					return;
 				}
@@ -69,10 +68,7 @@ var douban = function(){
 					sc.getInfo(song, function(p){
 						log(JSON.stringify(p));
 						if(song.like != p.islove){
-							if(song.like){
-								log("love " + song.title + "in last.fm");
-								sc.love();
-							}else{
+							if(p.islove){
 								log("love " + song.title + "in douban.fm");
 								o.type = cmds.like;
 								ex(JSON.stringify(o));
@@ -101,6 +97,12 @@ var douban = function(){
 				case cmds.unlike:
 					sc.unlove();
 					break;
+        case cmds.pause:
+          sc.pause();
+          break;
+        case cmds.gotoplay:
+          sc.play();
+          break;
 				default:
 					break;
 				}
