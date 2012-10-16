@@ -5,11 +5,12 @@ var meta = <><![CDATA[
 // @description    记录 google music beta 到 last.fm
 // @include        http://play.google.com/music/listen*
 // @include        https://play.google.com/music/listen*
+// @require        https://raw.github.com/justan/lrc/master/lrc.js
 // @require        https://raw.github.com/justan/gmscrobber/master/simple_scrobbler_user.js
-// @version        0.1.1
+// @version        0.1.2
 // @uso:script     111546
 // @initiative     false
-// @changelog      love 同步
+// @changelog      歌词支持
 // ==/UserScript==
 ]]></>.toString();
 

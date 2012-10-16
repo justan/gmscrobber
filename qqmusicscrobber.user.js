@@ -7,11 +7,11 @@ this.meta = <><![CDATA[
 // @match       http://y.qq.com/?*
 // @match       http://y.qq.com/#*
 // @exclude     http://y.qq.com/y/*
+// @require     https://raw.github.com/justan/lrc/master/lrc.js
 // @require     https://raw.github.com/justan/gmscrobber/master/simple_scrobbler_user.js
-// @version     0.0.2
+// @version     0.0.3
+// @changelog   歌词支持
 // @uso:script  136050
-// @updateURL   https://raw.github.com/justan/gmscrobber/master/qqmusicscrobber.user.js
-// @downloadURL   https://raw.github.com/justan/gmscrobber/master/qqmusicscrobber.user.js
 // ==/UserScript==
 ]]></>.toString();
 
@@ -57,7 +57,7 @@ var scrobber = new Scrobbler({
 var getSongInfo = function(){
   var song = {};
   var songinfo = document.getElementById('divsonginfo');
-  song.title = songinfo.getElementsByClassName('music_name')[0].title;
+  song.title = songinfo.getElementsByClassName('music_name')[0].title.replace(/\([^\)]*\)/, '');
   song.artist = songinfo.getElementsByClassName('singer_name')[0].title;
   song.duration = timeParse(document.getElementById('ptime').innerHTML);
   song.playTime = song.duration * document.getElementById('spanplaybar').style.width.replace(/%/, '') / 100;

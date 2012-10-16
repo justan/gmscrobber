@@ -1,4 +1,4 @@
-﻿var log = function(){},//GM_log,//unsafeWindow.console.log,//
+﻿var log = GM_log,//function(){},//unsafeWindow.console.log,//
 	getVal = GM_getValue,
 	setVal = GM_setValue,
 	delVal = GM_deleteValue,
@@ -36,8 +36,9 @@ var Scrobbler = function(){
 	fn.prototype = {
 		init: function(){
 			var sk = getVal("session"),
-				token = document.location.search.match(tokenreg);
-			that = this;
+        token = document.location.search.match(tokenreg),
+        that = this;
+      
       token = token && token[1];
 			
 			log(sk + "\n" + token + "\n" + document.location.href);
@@ -62,14 +63,8 @@ var Scrobbler = function(){
 			}else{
 				rmc("开始记录" + that.name, fn.redirect);
 			}
-      this.listeners = {
-        nowplaying: [],
-        scrobble: [],
-        love: [],
-        unlove: [],
-        ban: [],
-        unban: []
-      };
+      
+      this.listeners = {};
 		},
 		
 		getSession: function(){
@@ -92,6 +87,7 @@ var Scrobbler = function(){
         var info = {}, that = this;
         setInterval(function(){
           try{
+            that.getSongInfo = getSongInfo;
             info = getSongInfo();
             infoChecker.call(that, info);
           }catch(e){
@@ -101,18 +97,15 @@ var Scrobbler = function(){
       };
       var oldSong = {};
       var infoChecker = function(song){
-        var songstr = JSON.stringify(song);
         if(song.title && song.artist && song.duration){
-          //log(songstr)
-          //log(JSON.stringify(oldSong))
           if(song.title != oldSong.title || song.artist != oldSong.artist || song.duration != oldSong.duration){
             this.nowPlaying(song);
           }else{
             //log(this.state)
-            if(song.playTime != oldSong.playTime && this.state != 'play'){
-              this.play(song.playTime + this.info.offset);
-            }else if(song.playTime == oldSong.playTime && (this.state != 'buffer' || this.state != 'pause')){
-              this.buffer();
+            if(song.playTime != oldSong.playTime){
+              this.state != 'play' && this.play(song.playTime + this.info.offset);
+            }else{
+              this.state == 'play' && this.pause();
             }
           }
         }
@@ -131,13 +124,14 @@ var Scrobbler = function(){
      * @param {String} song.artist 歌手(多个歌手用 & 连接)
      * @param {String} song.duration 时长. 单位: 秒
      * @param {String} [song.album] 专辑名
+     * @param {String} [song.playTime] 开始播放时的时间
      */
 		nowPlaying: function(song){
 			var that = this;
 			this.song = song; //song: {title: "", artist: "", duration: "", album: ""}
 			this.timestamp = Math.floor(new Date().getTime()/1000);
 			this.info = {iscrobble: false, offset: 0};
-			this.play();
+			this.play(song.playTime || 0);
 			//log(JSON.stringify(song));
 			log(song.title + " now playing");
 			this.ajax({
@@ -154,8 +148,8 @@ var Scrobbler = function(){
 			true);
       
       //typeof meta != 'undefined' && that.record(song, 'nowplaying');
-      lyr(song.title, song.artist, song.album);
       this.fire('nowplaying');
+      lyr.call(this);
 		},
     
     //
@@ -299,6 +293,7 @@ var Scrobbler = function(){
 		play: function(realPlayTime){
 			var that = this, rpt = realPlayTime, rt;
 			this.state = "play";
+      this.fire(this.state);
 			
 			if(!rpt){
 				rpt = Math.floor(new Date().getTime()/1000) - this.timestamp;
@@ -313,17 +308,21 @@ var Scrobbler = function(){
 		pause: function(){
 			this.type || clearTimeout(_timer);
 			this.state = "pause";
+      this.fire(this.state);
 		},
 		buffer: function(){
-			this.pause();
+			this.type || clearTimeout(_timer);
 			this.state = "buffer";
+      this.fire(this.state);
 		},
 		stop: function(){
 			this.type || clearTimeout(_timer);
 			this.state = "stop";
+      this.fire(this.state);
 		},
 		seek: function(offset){
       this.state = "seek";
+      this.fire(this.state, offset);
 			this.info.offset += offset;
       log('seek, offset: ' + offset + ', totle offset: ' + this.info.offset);
 		},
@@ -340,6 +339,7 @@ var Scrobbler = function(){
     on: function(event, handler){
       this.listeners[event] = this.listeners[event] || [];
       this.listeners[event].push(handler);
+      return this;
     },
     off: function(event, handler){
       var listeners = this.listeners[event] || [];
@@ -352,12 +352,17 @@ var Scrobbler = function(){
       }else{
         delete this.listeners[event];
       }
+      return this;
     },
     fire: function(event){
       var listeners = this.listeners[event] || [];
+      var args = [].slice.call(arguments);
+      args.shift();
+      
       for(var i = 0, l = listeners.length; i < l; i++){
-        listeners[i].call(this);
+        listeners[i] && listeners[i].apply(this, args);
       }
+      return this;
     }
 	};
 	
@@ -431,8 +436,20 @@ var Scrobbler = function(){
  * 歌词 API 来源于 (@solos)[https://github.com/solos] 的(歌词迷)[http://api.geci.me/en/latest/index.html]
  */
 var lyr = function(){
-  var fn = function(title, artist, album){
+  var lrc;
+  var fn = function(){
+    var title = this.song.title
+      , artist = this.song.artist
+      , album = this.song.album
+      , startTime = this.song.playTime || 0
+      , that = this
+      ;
+    
     log('lyric for ' + artist + '\'s ' + title + ' / ' + album + ' is getting..');
+    
+    var t1 = Date.now();
+    lrc && lrc.stop();
+    
     xhr({
       method: 'GET',
       url: 'http://geci.me/api/lyric/' + title + '/' + artist,
@@ -449,27 +466,54 @@ var lyr = function(){
             url: lyrSrc,
             //overrideMimeType: 'text/plain; charset=gb2312',
             onload: function(d){
-              fn.log(d.responseText);
+              var txt = d.responseText;
+              GM_log(txt);
+              
+              if(typeof Lrc != 'undefined'){
+                lrc = (new Lrc(txt, function(txt, extra){
+                  
+                  txt && lrcOut.call(this, txt, extra);
+                  //that.getSongInfo && lrcOut('player time: ' + that.getSongInfo().playTime)
+                  //lrcOut(lrc.lrc.split('\n')[extra.originLineNum])
+                }))
+                lrc.play(startTime * 1000 + Date.now() - t1);
+              }
             },
             onerror: function(){
-              fn.log('some error occured..');
+              lrcOut('some error occured..');
             }
           });
         }else{
-          fn.log('no lyrics for ' + title);
+          lrcOut('no lyrics for ' + title);
         }
       },
       onerror: function (e){
-        fn.log('搜索歌词失败! ' + JSON.stringify(e));
+        lrcOut('搜索歌词失败! ' + JSON.stringify(e));
       }
     });
+    
+    this.off('pause', pause).off('play', pause).off('buffer', pause).
+      on('pause', pause).on('play', pause).on('buffer', pause).
+      off('seek', seek).on('seek', seek);
   };
-  fn.log = function(txt){
-    unsafeWindow.console && unsafeWindow.console.log(txt);
-    GM_log(txt);
-  };
+  
+  function pause(){
+    log('pause')
+    lrc && lrc.pauseToggle();
+  }
+  
+  function seek(offset){
+    lrc && lrc.seek(-offset * 1000);
+  }
+
   return fn;
 }();
+
+//重新此方法可实现自己歌词输出
+var lrcOut = function(txt){
+  unsafeWindow.console && unsafeWindow.console.log(txt);
+  //GM_log(txt);
+};
 
 //userscript 自动更新工具
 var uso = {

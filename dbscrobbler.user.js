@@ -5,11 +5,12 @@ var meta = <><![CDATA[
 // @description    记录 douban.fm 到last.fm
 // @include        http://douban.fm/
 // @include        http://douban.fm/?*
+// @require        https://raw.github.com/justan/lrc/master/lrc.js
 // @require        https://raw.github.com/justan/gmscrobber/master/simple_scrobbler_user.js
-// @version        0.1.8
+// @version        0.2.0
 // @uso:script     98833
-// @changelog      follow 豆瓣初始化方法
-// @initiative     true
+// @changelog      歌词支持
+// @initiative     false
 // ==/UserScript==
 ]]></>.toString();
 
@@ -36,7 +37,7 @@ var douban = function(){
 			song.duration = song.len || 180;
 			
 			setTimeout(function(){
-				if(song.ssid == null || song.subtype == "T"){
+				if(song.ssid === null || song.subtype == "T"){
 					log("无效歌曲, 跳过...");
 					return;
 				}
