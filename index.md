@@ -17,7 +17,7 @@ gmscrobber 的目标是提供一种简单的方法来将在线播放的音乐记
   * 追求完美. 不想随便就记录一首歌曲? 对于开发者, GMscrobber 提供了精确的[歌曲控制](#歌曲控制相关)方法, 想让在 80% 时记录, 就不会在 79% 时记录.
   * 红星同步, 无视豆瓣电台广告...
   * 程序内可停止使用:>
-  * 歌词支持.
+  * 歌词支持. lrc 同步歌词输出在浏览器的 javascript 控制台(一般按 _F12_ 或 _Ctrl + Shift + K_ 打开)
 
 ## 网站支持
 目前支持的网站有: [豆瓣电台](http://douban.fm/), [<del>谷歌音乐(已关闭)</del>](http://g.top100.cn/16667639/html/player.html#loaded), [Google Music](http://music.google.com), [QQ 音乐](http://music.qq.com)
