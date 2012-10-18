@@ -1,4 +1,4 @@
-﻿var log = GM_log,//function(){},//unsafeWindow.console.log,//
+﻿var log = function(){},GM_log,////unsafeWindow.console.log,//
 	getVal = GM_getValue,
 	setVal = GM_setValue,
 	delVal = GM_deleteValue,
