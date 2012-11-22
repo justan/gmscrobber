@@ -1,4 +1,3 @@
-var meta = <><![CDATA[
 // ==UserScript==
 // @name           google music scrobbler
 // @namespace      http://gmscrobber.whosemind.net
@@ -7,43 +6,43 @@ var meta = <><![CDATA[
 // @include        https://play.google.com/music/listen*
 // @require        https://raw.github.com/justan/lrc/master/lrc.js
 // @require        https://raw.github.com/justan/gmscrobber/master/simple_scrobbler_user.js
-// @version        0.1.2
+// @version        0.1.3
 // @uso:script     111546
 // @initiative     false
-// @changelog      歌词支持
+// @changelog      firefox 17 支持
 // ==/UserScript==
-]]></>.toString();
 
-meta = uso.metaParse(meta);
+var meta = uso.metaParse(GM_info.scriptMetaStr);
 
 (function(){
-var plug = <><![CDATA[
-(function(){
-  var XHR = XMLHttpRequest.prototype, _open = XHR.open, _send = XHR.send;
-  XHR.open = function(){
-    this.__type__ = arguments[0];
-    this.__url__ = arguments[1];
-    return _open.apply(this, arguments);
-  };
-  XHR.send = function(){
-    this.__data__ = arguments[0];
-    send(this);
-    return _send.apply(this, arguments);
-  };
-  
-  var list = {}, send = function(xhr){
-    var path = xhr.__url__.replace(/\?.+/, '');
-    if(list[path]){
-      list[path].forEach(function(fn){
-        fn.apply(null, [xhr.__url__, xhr.__data__]);
-      });
-    }
-  };
-  window['whosemind'] = {
-    list: list,
-  };
-})()
-]]></>.toString(), script = document.createElement('script');
+var plug = "\
+    (function(){\
+      var XHR = XMLHttpRequest.prototype, _open = XHR.open, _send = XHR.send;\
+      XHR.open = function(){\
+        this.__type__ = arguments[0];\
+        this.__url__ = arguments[1];\
+        return _open.apply(this, arguments);\
+      };\
+      XHR.send = function(){\
+        this.__data__ = arguments[0];\
+        send(this);\
+        return _send.apply(this, arguments);\
+      };\
+      \
+      var list = {}, send = function(xhr){\
+        var path = xhr.__url__.replace(/\?.+/, '');\
+        if(list[path]){\
+          list[path].forEach(function(fn){\
+            fn.apply(null, [xhr.__url__, xhr.__data__]);\
+          });\
+        }\
+      };\
+      window['whosemind'] = {\
+        list: list,\
+      };\
+    })()\
+    "
+  , script = document.createElement('script');
 script.innerHTML = plug;
 document.body.appendChild(script);
 })();
@@ -195,7 +194,7 @@ var sc, gm = function(){
 			}
 		})();
     
-    bindSend(function(url, data){
+    0 && bindSend(function(url, data){
       var d = decodeURIComponent(data.replace(/json=/, '')),
         info = JSON.parse(d), entries = info.entries, rate, song = {}, _ele;
       if(entries.length == 1 && !entries[0].creationDate){//rate

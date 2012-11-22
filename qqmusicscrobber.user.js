@@ -1,4 +1,3 @@
-this.meta = <><![CDATA[
 // ==UserScript==
 // @name        QQ音乐 online scrobbler
 // @namespace   http://gmscrobber.whosemind.net
@@ -9,13 +8,12 @@ this.meta = <><![CDATA[
 // @exclude     http://y.qq.com/y/*
 // @require     https://raw.github.com/justan/lrc/master/lrc.js
 // @require     https://raw.github.com/justan/gmscrobber/master/simple_scrobbler_user.js
-// @version     0.0.3
-// @changelog   歌词支持
+// @version     0.0.4
+// @changelog   firefox 17 支持
 // @uso:script  136050
 // ==/UserScript==
-]]></>.toString();
 
-this.meta = uso.metaParse(this.meta);
+var meta = uso.metaParse(GM_info.scriptMetaStr);
 
 var init = function(){
   log('init');

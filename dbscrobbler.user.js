@@ -1,4 +1,3 @@
-var meta = <><![CDATA[
 // ==UserScript==
 // @name           豆瓣电台dbscrobbler
 // @namespace      http://gmscrobber.whosemind.net
@@ -7,14 +6,13 @@ var meta = <><![CDATA[
 // @include        http://douban.fm/?*
 // @require        https://raw.github.com/justan/lrc/master/lrc.js
 // @require        https://raw.github.com/justan/gmscrobber/master/simple_scrobbler_user.js
-// @version        0.2.0
+// @version        0.2.1
 // @uso:script     98833
-// @changelog      歌词支持
+// @changelog      firefox 17 支持
 // @initiative     false
 // ==/UserScript==
-]]></>.toString();
 
-meta = uso.metaParse(meta);
+var meta = uso.metaParse(GM_info.scriptMetaStr);
 uso.check(meta.version, meta.uso.script);
 
 (function(){
