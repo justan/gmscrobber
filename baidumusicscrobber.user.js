@@ -29,11 +29,11 @@ var scrobber = new Scrobbler({
 var getSongInfo = function(){
   var song = {};
   var songinfo = document.getElementsByClassName('main-panel')[0];
-  song.title = songinfo.getElementsByClassName('songname')[0].innerText;
-  song.artist = songinfo.getElementsByClassName('artist')[0].innerText;
-  song.duration = timeParse(songinfo.getElementsByClassName('totalTime')[0].innerText);
-  song.playTime = timeParse(songinfo.getElementsByClassName('curTime')[0].innerText);
-  song.album = document.getElementsByClassName('album-name')[0].innerText.trim();
+  song.title = songinfo.getElementsByClassName('songname')[0].innerHTML.replace(/<.+?>/gim,"");
+  song.artist = songinfo.getElementsByClassName('artist')[0].innerHTML.replace(/<.+?>/gim,"");
+  song.duration = timeParse(songinfo.getElementsByClassName('totalTime')[0].innerHTML.replace(/<.+?/gim,""));
+  song.playTime = timeParse(songinfo.getElementsByClassName('curTime')[0].innerHTML.replace(/<.+?>/gim,""));
+  song.album = document.getElementsByClassName('album-name')[0].innerHTML.replace(/<.+?/gim, "").trim();
   return song;
 };
 
