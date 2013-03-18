@@ -3,6 +3,7 @@
 // @namespace   http://gmscrobber.whosemind.net
 // @description 记录百度音乐到 last.fm
 // @match       http://play.baidu.com/
+// @match       http://play.baidu.com/?*
 // @require     https://raw.github.com/justan/gmscrobber/master/simple_scrobbler_user.js
 // @version     0.0.4
 // @changelog   firefox 17 支持
