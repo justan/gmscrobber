@@ -6,7 +6,6 @@
 // @match       http://y.qq.com/?*
 // @match       http://y.qq.com/#*
 // @exclude     http://y.qq.com/y/*
-// @require     https://raw.github.com/justan/lrc/master/lrc.js
 // @require     https://raw.github.com/justan/gmscrobber/master/simple_scrobbler_user.js
 // @version     0.0.4
 // @changelog   firefox 17 支持
