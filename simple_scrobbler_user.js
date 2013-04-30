@@ -98,7 +98,7 @@ var Scrobbler = function(){
       var oldSong = {};
       var infoChecker = function(song){
         if(song.title && song.artist && song.duration){
-          if(song.title != oldSong.title || song.artist != oldSong.artist || song.duration != oldSong.duration){
+          if(song.title != oldSong.title || song.artist != oldSong.artist){
             this.nowPlaying(song);
           }else{
             //log(this.state)
@@ -108,9 +108,8 @@ var Scrobbler = function(){
               this.state == 'play' && this.pause();
             }
           }
+          oldSong = uso.clone(song);
         }
-        
-        oldSong = uso.clone(song);
       };
       return fn;
     })(),
@@ -634,26 +633,11 @@ var uso = {
     for(var key in obj){ temp[key] = arguments.callee(obj[key]) }
     return temp;
   },
-  /**
-   * 监控页面元素文字变化
-   * @param {Object} node 要监控的元素
-   * @param {Function} node 文字变化后的回调函数
-   * @param {Number} [time] 监控定时器的间隙时间
-   */
-  watchContent: (function(){
-    var timers = {};
-    var fn = function(node, handler, time){
-      var timer = setInterval(function(){
-        var newcontent = node.innerHTML;
-        if(newcontent !== timers[timer].content){
-          handler(node, timers[timer].content, newcontent);
-          timers[timer].content = newcontent;
-        }
-      }, time || 100);
-      timers[timer] = {handler: handler, content: node.innerHTML};
-    };
-    return fn;
-  })()
+  //str hh:mm:ss
+  timeParse: function(str) {
+    var ts = str.trim().match(/(?:(\d+):)?(\d\d?):(\d\d?)/);
+    return (ts[1] || 0) * 3600 + ts[2] * 60 + ts[3] * 1 || 0;
+  }
 };
 
 
