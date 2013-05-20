@@ -475,7 +475,7 @@ var lyr = function(){
                   //that.getSongInfo && lrcOut('player time: ' + that.getSongInfo().playTime)
                   //lrcOut(lrc.lrc.split('\n')[extra.originLineNum])
                 }))
-                lrc.play(startTime * 1000 + Date.now() - t1);
+                that.state === 'play' && lrc.play(startTime * 1000 + Date.now() - t1);
               }
             },
             onerror: function(){
