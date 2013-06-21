@@ -474,8 +474,9 @@ var lyr = function(){
                   txt && lrcOut.call(this, txt, extra);
                   //that.getSongInfo && lrcOut('player time: ' + that.getSongInfo().playTime)
                   //lrcOut(lrc.lrc.split('\n')[extra.originLineNum])
-                }))
-                that.state === 'play' && lrc.play(startTime * 1000 + Date.now() - t1);
+                }));
+                //提前1秒显示歌词
+                that.state === 'play' && lrc.play(startTime * 1000 + Date.now() - t1 + 1000);
               }
             },
             onerror: function(){
