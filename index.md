@@ -18,13 +18,21 @@ gmscrobber 的目标是提供一种简单的方法来将在线播放的音乐记
   * 歌词支持. lrc 同步歌词输出在浏览器的 javascript 控制台(一般按 _F12_ 或 _Ctrl + Shift + K_ 打开)
 
 ## 网站支持
-目前支持的网站有: [豆瓣电台](http://douban.fm/), [Google Music](http://music.google.com), [QQ 音乐](http://music.qq.com), [百度音乐盒](http://play.baidu.com)(感谢 [@solos]), [网易云音乐](http://music.163.com)
+目前支持的网站有: [豆瓣电台](http://douban.fm/), [Google Music](http://music.google.com), [QQ 音乐](http://music.qq.com), [百度音乐盒](http://play.baidu.com), [网易云音乐](http://music.163.com)
+
+## 下载
+
+  - [豆瓣电台 scrobbler](dbscrobbler.user.js)
+  - [Google Play scrobbler](gmscrobbler.user.js)
+  - [QQ 音乐 scrobbler](qqmusicscrobber.user.js)
+  - [百度音乐盒 scrobbler](dbscrobbler.user.js)(感谢 [@solos])
+  - [网易云音乐 scrobbler](163_music_scrobbler.user.js)
 
 ## 使用
 在网站上首次使用 gmscrobbler 需要 last.fm 的认证. 认证以后, 脚本会自动运行. 认证操作如下:
 
-  1. 安装用户脚本. 推荐使用 github 的 raw 模式安装
-  2. 打开需要记录的音乐网站
+  1. 下载安装对应网站的用户脚本.
+  2. 打开需要记录的音乐网站.
   3. 在 greasemonkey(或其他兼容扩展) 命令菜单中选中 "开始记录..."
   4. 上一步会跳转到 last.fm 网站中进行认证. 确认后整个过程即已完成.
   
