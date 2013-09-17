@@ -25,7 +25,7 @@ gmscrobber 的目标是提供一种简单的方法来将在线播放的音乐记
   - [豆瓣电台 scrobbler](dbscrobbler.user.js)
   - [Google Play scrobbler](gmscrobbler.user.js)
   - [QQ 音乐 scrobbler](qqmusicscrobber.user.js)
-  - [百度音乐盒 scrobbler](dbscrobbler.user.js)(感谢 [@solos])
+  - [百度音乐盒 scrobbler](baidumusicscrobber.user.js)(感谢 [@solos])
   - [网易云音乐 scrobbler](163_music_scrobbler.user.js)
 
 ## 使用
