@@ -2,7 +2,8 @@
 // @name        GMscrobber for xiami
 // @namespace   http://gmscrobber.whosemind.net
 // @description 记录虾米音乐到 last.fm
-// @include     http://www.xiami.com/radio/play/*
+// @include     http://www.xiami.com/radio/play
+// @include     http://www.xiami.com/radio/play*
 // @include     http://www.xiami.com/song/play*
 // @require     http://justan.github.io/gmscrobber/simple_scrobbler_user.js
 // @version     0.1
@@ -32,9 +33,9 @@ var scrobbler = new Scrobbler({
     }
     var startFn = root[start];
     root[start] = function(info) {
-      console.log('start');
+      log('start');
       setTimeout(function() {
-        console.log(info);
+        log(info);
         that.nowPlaying({
           artist: info.artist
         , title: info.songName
@@ -81,12 +82,13 @@ var scrobbler = new Scrobbler({
 function checkFav(like){
   var song = scrobbler.song;
   scrobbler.getInfo(song, function(info) {
-    if((info.islove * 1) != like){
+    if((info.islove * 1) != like && !like){
       //同步 last.fm 红心到虾米
       root.$.get('http://www.xiami.com/song/fav?ids=' + song.songId, function(script) {
         song.autoFav = true;
         root.$('body').append(root.$(script));
       });
     }
+    document.querySelector('.radio_player,#xiami_player').title = '在 last.fm 中记录: ' + info.len + ' 次';
   });
 }
