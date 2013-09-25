@@ -9,7 +9,7 @@ layout: default
 gmscrobber 的目标是提供一种简单的方法来将在线播放的音乐记录到 [last.fm](http://last.fm).
 安装 gmscrobber 需要 [greasemonkey](http://www.greasespot.net/) 或者兼容环境(如 chrome + Tampermonkey 或 firefox + greasemonkey)
 
-## [GMscrobber 的特点]
+## GMscrobber 的特点
   
   * 安全. 使用 last.fm 2.0 API 的 [WEB Authentication ](http://cn.last.fm/api/webauth). 只需在last.fm官方网站上输入用户名密码.
   * 非侵入式. 
@@ -20,7 +20,7 @@ gmscrobber 的目标是提供一种简单的方法来将在线播放的音乐记
 ## 网站支持
 目前支持的网站有: [豆瓣电台](http://douban.fm/), [Google Music](http://music.google.com), [QQ 音乐](http://music.qq.com), [百度音乐盒](http://play.baidu.com), [网易云音乐](http://music.163.com), [虾米电台/虾米播放器](http://www.xiami.com)
 
-## [下载]
+## 下载<a name='#下载'></a>
 
   - [豆瓣电台 scrobbler](dbscrobbler.user.js)
   - [Google Play scrobbler](gmscrobbler.user.js)
@@ -29,7 +29,7 @@ gmscrobber 的目标是提供一种简单的方法来将在线播放的音乐记
   - [网易云音乐 scrobbler](163_music_scrobbler.user.js)
   - [虾米音乐 scrobbler](GMscrobbler_for_xiami.user.js)
 
-## [使用]
+## 使用
 在网站上首次使用 gmscrobbler 需要 last.fm 的认证. 认证以后, 脚本会自动运行. 认证操作如下:
 
   1. 下载安装对应网站的用户脚本.
@@ -37,10 +37,10 @@ gmscrobber 的目标是提供一种简单的方法来将在线播放的音乐记
   3. 在 greasemonkey(或其他兼容扩展) 命令菜单中选中 "开始记录..."
   4. 上一步会跳转到 last.fm 网站中进行认证. 确认后整个过程即已完成.
   
-## [歌词]
+## 歌词
 通过 [@solos] 的[歌词迷API](http://api.geci.me/en/latest/index.html), gmscrobbler 也对正在收听的歌曲提供了简单的在线歌词. 输出在浏览器的 javascript 控制台中(如在 Firefox 中 ctrl + shift + j 打开).
 
-## [编写你自己的 scrobbler]
+## 编写你自己的 scrobbler
 使用 GMscrobber 将使编写你自己的 scrobbler 变得非常简单, 如果已有 javascript 和 userscript 的编写经验, 写一个 scrobbler 只需要以下几步: 
 
   1. 在你喜欢的在线音乐播放页面新建一个用户脚本文件, 引入 simple_scrobbler_user:   
@@ -61,7 +61,7 @@ gmscrobber 的目标是提供一种简单的方法来将在线播放的音乐记
       
   4. 大功告成
 
-### [关于页面播放器监控]
+### 关于页面播放器监控<a name='#关于页面播放器监控'></a>
 目前有两种办法监控页面的播放状态:
   
   1. 最为普遍的, 我们并不清楚页面播放器的代码结构, 此种情况下可以编写一个页面歌曲信息获取函数, 将其传给  `scrobber.setSongInfoFN`, 剩下的 gmscrobber 会聪明的处理好. 示例: [QQ 音乐 scrobber](https://github.com/justan/gmscrobber/blob/master/qqmusicscrobber.user.js).
@@ -73,7 +73,7 @@ gmscrobber 的目标是提供一种简单的方法来将在线播放的音乐记
            return ex.apply(this, arguments);
          };
     
-### [scrobber 编写示例]
+### scrobber 编写示例
 
   * [怎样记录 QQ 音乐到 last.fm](http://blog.whosemind.net/blog/2012/06/15/zen-yang-ji-lu-qqyin-le-dao-last-dot-fm/)
 
