@@ -20,7 +20,7 @@ gmscrobber 的目标是提供一种简单的方法来将在线播放的音乐记
 ## 网站支持
 目前支持的网站有: [豆瓣电台](http://douban.fm/), [Google Music](http://music.google.com), [QQ 音乐](http://music.qq.com), [百度音乐盒](http://play.baidu.com), [网易云音乐](http://music.163.com), [虾米电台/虾米播放器](http://www.xiami.com)
 
-## 下载<a name='#下载'></a>
+## 下载<a name='下载'></a>
 
   - [豆瓣电台 scrobbler](dbscrobbler.user.js)
   - [Google Play scrobbler](gmscrobbler.user.js)
@@ -61,7 +61,7 @@ gmscrobber 的目标是提供一种简单的方法来将在线播放的音乐记
       
   4. 大功告成
 
-### 关于页面播放器监控<a name='#关于页面播放器监控'></a>
+### 关于页面播放器监控<a name='关于页面播放器监控'></a>
 目前有两种办法监控页面的播放状态:
   
   1. 最为普遍的, 我们并不清楚页面播放器的代码结构, 此种情况下可以编写一个页面歌曲信息获取函数, 将其传给  `scrobber.setSongInfoFN`, 剩下的 gmscrobber 会聪明的处理好. 示例: [QQ 音乐 scrobber](https://github.com/justan/gmscrobber/blob/master/qqmusicscrobber.user.js).
