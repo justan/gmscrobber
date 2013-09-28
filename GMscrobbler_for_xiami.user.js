@@ -6,7 +6,7 @@
 // @include     http://www.xiami.com/radio/play*
 // @include     http://www.xiami.com/song/play*
 // @require     http://justan.github.io/gmscrobber/simple_scrobbler_user.js
-// @version     0.1
+// @version     0.1.1
 // ==/UserScript==
 
 var meta = uso.metaParse(GM_info.scriptMetaStr)

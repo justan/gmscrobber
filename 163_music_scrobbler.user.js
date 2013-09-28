@@ -7,7 +7,7 @@
 // @include     http://music.163.com/?*
 // @require     https://raw.github.com/justan/lrc/master/lrc.js
 // @require     https://raw.github.com/justan/gmscrobber/master/simple_scrobbler_user.js
-// @version     0.1.1
+// @version     0.1.2
 // ==/UserScript==
 
 var scrobbler = new Scrobbler({
@@ -16,15 +16,14 @@ var scrobbler = new Scrobbler({
     var that = this;
     this.setSongInfoFN(getSongInfo);
     this.on('nowplaying', function() {
-      fetchSongInfo(this.song.id, function(info163) {
-        that.song.album = info163.album.name;
-        that.song._info = info163;
+      fetchSongInfo(this.song.id, function(album) {
+        that.song.album = album;
         
         that.getInfo(that.song, function(info) {
           document.getElementById('g_player').title = '在 last.fm 中记录: ' + info.len + '次';
           
           that.song.extra = info;
-          if(info.islove === '1' && !info163.starred) {
+          if(info.islove === '1') {
             document.querySelector('#g_player .icn-add').click();
             frames[0].document.querySelector('.ztag>ul>.xtag>.f-cb').click();
           }
@@ -34,7 +33,7 @@ var scrobbler = new Scrobbler({
     
     //只能添加, 不能删除
     function fav(e) {
-      that.song._info && !that.song._info.started && that.song.extra.islove === '0' || that.love();
+      that.song.extra.islove === '0' || that.love();
     }
     
     document.querySelector('#g_player .icn-add').addEventListener('click', function() {
@@ -64,13 +63,14 @@ function getInfo(s) {
 }
 
 function fetchSongInfo(id, cb) {
-  var url = 'http://music.163.com/api/song/detail/?id=' + id + '&ids=[' + id + ']';
+  var url = 'http://music.163.com/song?id=' + id;
   
   xhr({
     method: 'GET'
   , url: url
   , onload: function(d){
-      cb(JSON.parse(d.responseText).songs[0])
+      var ablum = d.responseText.match(/所属专辑.+"s-fc7">(.+?)</)[1];
+      cb(ablum);
     }
   , onerror: function(e) {
       log("歌曲信息获取失败.. \n" + JSON.stringify(e));
