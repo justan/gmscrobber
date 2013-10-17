@@ -85,4 +85,11 @@ gmscrobber 的目标是提供一种简单的方法来将在线播放的音乐记
   * [Google music scrobbler](https://userscripts.org/scripts/show/111546)
   * [QQ 音乐](https://userscripts.org/scripts/show/136050)
 
+
+联系
+---
+有任何问题, 欢迎提交到 [Github issue] 上.
+
+
 [@solos]: https://github.com/solos
+[Github issue]: https://github.com/justan/gmscrobber/issues?state=open
