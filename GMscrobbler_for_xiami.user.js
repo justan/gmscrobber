@@ -36,19 +36,28 @@ var scrobbler = new Scrobbler({
       log('start');
       setTimeout(function() {
         log(info);
-        that.nowPlaying({
+		var startTime = Date.now();
+        that.song = {
           artist: info.artist
         , title: info.songName
         , songId: info.songId
-        });
+        };
         root.$.ajax({
           url: 'http://www.xiami.com/song/playlist/id/' + that.song.songId + '/object_name/default/object_id/0'
         , dataType: 'xml'
         , success: function(xml) {
             var album = xml.querySelector('track album_name').textContent;
             var like = xml.querySelector('track grade').textContent === '1';
-            that.song.album = album;
+			var duration = xml.querySelector('track length').textContent;
             setTimeout(function() {
+				//补加歌曲时长
+				that.nowPlaying({
+				  artist: info.artist
+				, title: info.songName
+				, songId: info.songId
+				, duration: duration - Math.round((Date.now() - startTime)/1000)
+				, album: album
+				});
               checkFav(like)
             }, 0);
           }
