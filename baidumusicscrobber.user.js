@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name        百度音乐 lastfm scrobbler
-// @namespace   http://gmscrobber.whosemind.net
+// @namespace   http:/justan.github.com/gmscrobber/
 // @description 记录百度音乐到 last.fm
 // @match       http://play.baidu.com/
 // @match       http://play.baidu.com/?*
 // @require     https://raw.github.com/justan/gmscrobber/master/simple_scrobbler_user.js
-// @version     0.0.4
-// @changelog   firefox 17 支持
-// @uso:script  136050
+// @version     0.0.5
+// @changelog   update userscript id
+// @uso:script  162278
 // ==/UserScript==
 
 var meta = uso.metaParse(GM_info.scriptMetaStr);
