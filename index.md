@@ -28,7 +28,6 @@ gmscrobber 的目标是提供一种简单的方法来将在线播放的音乐记
   - [网易云音乐 scrobbler](163_music_scrobbler.user.js)
   - [虾米音乐 scrobbler](GMscrobbler_for_xiami.user.js)
   
-  
   - [百度音乐盒 scrobbler](baidumusicscrobber.user.js)
   - [Bus.fm scrobbler](bus.fm_scrobber.user.js)
   - [QQ 音乐电台 scrobbler](qqfmscrobber.user.js)
