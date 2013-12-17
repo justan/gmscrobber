@@ -23,11 +23,13 @@ gmscrobber 的目标是提供一种简单的方法来将在线播放的音乐记
 ## 下载<a name='下载'></a>
 
   - [豆瓣电台 scrobbler](dbscrobbler.user.js)
-  - [Google Play scrobbler](gmscrobbler.user.js)
   - [QQ 音乐 scrobbler](qqmusicscrobber.user.js)
   - [网易云音乐 scrobbler](163_music_scrobbler.user.js)
   - [虾米音乐 scrobbler](GMscrobbler_for_xiami.user.js)
-  
+
+基础支持(不支持红星同步): 
+
+  - [Google Play scrobbler](gmscrobbler.user.js)
   - [百度音乐盒 scrobbler](baidumusicscrobber.user.js)
   - [Bus.fm scrobbler](bus.fm_scrobber.user.js)
   - [QQ 音乐电台 scrobbler](qqfmscrobber.user.js)
