@@ -82,9 +82,13 @@ var Scrobbler = function(){
      * @param {Nunber} opts.checktime 定时器周期, 毫秒
      */
     setSongInfoFN: (function(){
+      var checkTime;
       var fn = function(getSongInfo, opts){
         opts = opts || {};
+        checkTime = opts.checktime || 2000;
+        
         var info = {}, that = this;
+        
         setInterval(function(){
           try{
             that.getSongInfo = getSongInfo;
@@ -93,7 +97,7 @@ var Scrobbler = function(){
           }catch(e){
             log(e.stack);
           }
-        }, opts.checktime || 2000);
+        }, checkTime);
       };
       var oldSong = {};
       var infoChecker = function(song){
@@ -103,7 +107,13 @@ var Scrobbler = function(){
           }else{
             //log(this.state)
             if(song.playTime != oldSong.playTime){
-              this.state != 'play' && this.play(song.playTime + this.info.offset);
+              if(song.playTime <= Math.ceil(checkTime / 1000) && (Date.now() / 1000 - this.timestamp > song.duration)){
+                log(song.title + ' repeating.');
+                //单曲重复
+                this.nowPlaying(song);
+              }else{
+                this.state != 'play' && this.play(song.playTime + this.info.offset);
+              }
             }else{
               this.state == 'play' && this.pause();
             }
