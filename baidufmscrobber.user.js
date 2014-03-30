@@ -5,7 +5,7 @@
 // @match       http://fm.baidu.com/
 // @match       http://fm.baidu.com/?*
 // @require     https://raw.github.com/justan/gmscrobber/master/simple_scrobbler_user.js
-// @version     0.0.1
+// @version     0.0.2
 // @uso:script  182622
 // ==/UserScript==
 
