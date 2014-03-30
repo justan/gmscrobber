@@ -55,6 +55,7 @@ function init(isFM) {
         }else{
           info.song = info.songName
         }
+        info.song = info.replace(/;/g, '&');
         setTimeout(function() {
           log(info);
           var startTime = Date.now();
