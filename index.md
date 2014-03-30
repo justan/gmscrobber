@@ -28,7 +28,7 @@ gmscrobber 的目标是提供一种简单的方法来将在线播放的音乐记
   - [虾米音乐 scrobbler](GMscrobbler_for_xiami.user.js)
   - [百度随心听 scrobbler](baidufmscrobber.user.js)
 
-基础支持(不支持红星同步): 
+基础支持(不支持红心同步): 
 
   - [Google Play scrobbler](gmscrobbler.user.js)
   - [百度音乐盒 scrobbler](baidumusicscrobber.user.js)
