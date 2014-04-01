@@ -6,7 +6,8 @@
 // @include     http://www.xiami.com/radio/play*
 // @include     http://www.xiami.com/play*
 // @require     http://justan.github.io/gmscrobber/simple_scrobbler_user.js
-// @version     0.2.0
+// @updateURL   http://justan.github.io/gmscrobber/GMscrobbler_for_xiami.user.js
+// @version     0.2.1
 // ==/UserScript==
 
 var meta = uso.metaParse(GM_info.scriptMetaStr)
@@ -55,7 +56,7 @@ function init(isFM) {
         }else{
           info.song = info.songName
         }
-        info.song = info.replace(/;/g, '&');
+        info.song = info.song.replace(/;/g, '&');
         setTimeout(function() {
           log(info);
           var startTime = Date.now();
