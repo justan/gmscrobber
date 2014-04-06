@@ -6,8 +6,8 @@
 // @include     http://music.163.com/
 // @include     http://music.163.com/?*
 // @require     https://raw.github.com/justan/lrc/master/lrc.js
-// @require     https://raw.github.com/justan/gmscrobber/master/simple_scrobbler_user.js
-// @version     0.1.2
+// @require     http://justan.github.io/gmscrobber/simple_scrobbler_user.js
+// @version     0.1.3
 // ==/UserScript==
 
 var scrobbler = new Scrobbler({

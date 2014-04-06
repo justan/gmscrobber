@@ -22,18 +22,18 @@ gmscrobber 的目标是提供一种简单的方法来将在线播放的音乐记
 
 ## 下载<a name='下载'></a>
 
-  - [豆瓣电台 scrobbler](dbscrobbler.user.js)
-  - [QQ 音乐 scrobbler](qqmusicscrobber.user.js)
-  - [网易云音乐 scrobbler](163_music_scrobbler.user.js)
-  - [虾米音乐 scrobbler](GMscrobbler_for_xiami.user.js)
-  - [百度随心听 scrobbler](baidufmscrobber.user.js)
+  - [豆瓣电台 scrobbler](scrobblers/dbscrobbler.user.js)
+  - [QQ 音乐 scrobbler](scrobblers/qqmusicscrobber.user.js)
+  - [网易云音乐 scrobbler](scrobblers/163_music_scrobbler.user.js)
+  - [虾米音乐 scrobbler](scrobblers/GMscrobbler_for_xiami.user.js)
+  - [百度随心听 scrobbler](scrobblers/baidufmscrobber.user.js)
 
 基础支持(不支持红心同步): 
 
-  - [Google Play scrobbler](gmscrobbler.user.js)
-  - [百度音乐盒 scrobbler](baidumusicscrobber.user.js)
-  - [Bus.fm scrobbler](bus.fm_scrobber.user.js)
-  - [QQ 音乐电台 scrobbler](qqfmscrobber.user.js)
+  - [Google Play scrobbler](scrobblers/gmscrobbler.user.js)
+  - [百度音乐盒 scrobbler](scrobblers/baidumusicscrobber.user.js)
+  - [Bus.fm scrobbler](scrobblers/bus.fm_scrobber.user.js)
+  - [QQ 音乐电台 scrobbler](scrobblers/qqfmscrobber.user.js)
 
 ## 使用
 在网站上首次使用 gmscrobbler 需要 last.fm 的认证. 认证以后, 脚本会自动运行. 认证操作如下:
@@ -51,7 +51,7 @@ gmscrobber 的目标是提供一种简单的方法来将在线播放的音乐记
 
   1. 在你喜欢的在线音乐播放页面新建一个用户脚本文件, 引入 simple_scrobbler_user:   
 
-         // @require  https://raw.github.com/justan/gmscrobber/master/simple_scrobbler_user.js
+         // @require  http://justan.github.io/gmscrobber/GMscrobbler_for_xiami.user.js
    
   2. 创建一个 Scrobber 实例:   
    `var scrobber = new Scrobber({name: '在线音乐', ready: init})`

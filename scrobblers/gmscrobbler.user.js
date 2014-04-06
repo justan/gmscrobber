@@ -4,8 +4,8 @@
 // @description    记录 google music beta 到 last.fm
 // @include        http://play.google.com/music/listen*
 // @include        https://play.google.com/music/listen*
-// @require        https://raw.github.com/justan/lrc/master/lrc.js
-// @require        https://raw.github.com/justan/gmscrobber/master/simple_scrobbler_user.js
+// @require        https://raw.githubusercontent.com/justan/lrc/master/lrc.js
+// @require        http://justan.github.io/gmscrobber/simple_scrobbler_user.js
 // @version        0.2.0
 // ==/UserScript==
 

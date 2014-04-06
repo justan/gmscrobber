@@ -5,9 +5,9 @@
 // @include     http://bus.fm/
 // @include     http://bus.fm/#*
 // @include     http://bus.fm/?*
-// @require     https://raw.github.com/justan/lrc/master/lrc.js
-// @require     https://raw.github.com/justan/gmscrobber/master/simple_scrobbler_user.js
-// @version     0.1
+// @require     https://raw.githubusercontent.com/justan/lrc/master/lrc.js
+// @require     http://justan.github.io/gmscrobber/simple_scrobbler_user.js
+// @version     0.1.1
 // ==/UserScript==
 
 var meta = uso.metaParse(GM_info.scriptMetaStr);
