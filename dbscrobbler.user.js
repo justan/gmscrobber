@@ -4,8 +4,8 @@
 // @description    记录 douban.fm 到last.fm
 // @include        http://douban.fm/
 // @include        http://douban.fm/?*
-// @require        https://raw.github.com/justan/lrc/master/lrc.js
-// @require        https://raw.github.com/justan/gmscrobber/master/simple_scrobbler_user.js
+// @require        https://raw.githubusercontent.com/justan/lrc/master/lrc.js
+// @require        https://raw.githubusercontent.com/justan/gmscrobber/gh-pages/simple_scrobbler_user.js
 // @version        0.2.1
 // @uso:script     98833
 // @changelog      firefox 17 支持
