@@ -4,7 +4,7 @@
 // @description 记录QQ音乐电台到 last.fm
 // @match       http://fm.qq.com/
 // @match       http://fm.qq.com/?*
-// @require     https://raw.github.com/justan/gmscrobber/master/simple_scrobbler_user.js
+// @require     http://justan.github.io/gmscrobber/simple_scrobbler_user.js
 // @version     0.0.1
 // @uso:script  182623
 // ==/UserScript==

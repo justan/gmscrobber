@@ -4,7 +4,7 @@
 // @description 记录百度音乐到 last.fm
 // @match       http://play.baidu.com/
 // @match       http://play.baidu.com/?*
-// @require     https://raw.github.com/justan/gmscrobber/master/simple_scrobbler_user.js
+// @require     http://justan.github.io/gmscrobber/simple_scrobbler_user.js
 // @version     0.0.5
 // @changelog   update userscript id
 // @uso:script  162278
