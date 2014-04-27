@@ -648,6 +648,29 @@ var uso = {
   timeParse: function(str) {
     var ts = str.trim().match(/(?:(\d+):)?(\d\d?):(\d\d?)/);
     return (ts[1] || 0) * 3600 + ts[2] * 60 + ts[3] * 1 || 0;
+  },
+  
+  //函数切面
+  //前面的函数返回值传入 breakCheck 判断, breakCheck 返回值为真时不执行后面的函数
+  beforeFn: function (oriFn, fn, breakCheck) {
+    return function() {
+      var ret = fn.apply(this, arguments);
+      if(breakCheck && breakCheck.call(this, ret)){
+        return ret;
+      }
+      return oriFn.apply(this, arguments);
+    };
+  },
+
+  afterFn: function (oriFn, fn, breakCheck) {
+    return function() {
+      var ret = oriFn.apply(this, arguments);
+      if(breakCheck && breakCheck.call(this, ret)){
+        return ret;
+      }
+      fn.apply(this, arguments);
+      return ret;
+    }
   }
 };
 
