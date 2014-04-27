@@ -34,9 +34,9 @@ if($.jPlayer) {
         if(that.state === 'pause'){
           that.play();
         }else{
-          that.nowPlaying(song);
-          
           setTimeout(function() {
+            that.nowPlaying(song);
+          
             that.getInfo(song, function(p) {
               var player = document.querySelector(that.csa)
                 , $loveBtn = $(player.querySelector('.btn-action-like'))
