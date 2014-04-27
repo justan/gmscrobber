@@ -70,8 +70,8 @@ gmscrobber 的目标是提供一种简单的方法来将在线播放的音乐记
 ### 关于页面播放器监控<a name='关于页面播放器监控'></a>
 目前有两种办法监控页面的播放状态:
   
-  1. 最为普遍的, 我们并不清楚页面播放器的代码结构, 此种情况下可以编写一个页面歌曲信息获取函数, 将其传给  `scrobber.setSongInfoFN`, 剩下的 gmscrobber 会聪明的处理好. 示例: [QQ 音乐 scrobber](https://github.com/justan/gmscrobber/blob/master/scrobblers/qqmusicscrobber.user.js).
-  2. 在页面播放器有可访问的播放状态变化函数的时候, 可以选择重新封装该函数. 如[豆瓣电台 scrobber](https://github.com/justan/gmscrobber/blob/master/scrobblers/dbscrobbler.user.js):   
+  1. 最为普遍的, 我们并不清楚页面播放器的代码结构, 此种情况下可以编写一个页面歌曲信息获取函数, 将其传给  `scrobber.setSongInfoFN`, 剩下的 gmscrobber 会聪明的处理好. 示例: [QQ 音乐 scrobber](https://github.com/justan/gmscrobber/blob/gh-pages/scrobblers/qqmusicscrobber.user.js).
+  2. 在页面播放器有可访问的播放状态变化函数的时候, 可以选择重新封装该函数. 如[豆瓣电台 scrobber](https://github.com/justan/gmscrobber/blob/gh-pages/scrobblers/dbscrobbler.user.js):   
 
          var ex = unsafeWindow.extStatusHandler;
          unsafeWindow.extStatusHandler = function(songChangeInfo){
