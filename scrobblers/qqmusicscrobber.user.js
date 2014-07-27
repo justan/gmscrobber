@@ -7,9 +7,15 @@
 // @match       http://y.qq.com/#*
 // @exclude     http://y.qq.com/y/*
 // @require     http://justan.github.io/gmscrobber/simple_scrobbler_user.js
-// @version     0.0.5
+// @version     0.0.6
 // @changelog   firefox 17 支持
 // @uso:script  136050
+// @grant       GM_getValue
+// @grant       GM_setValue 
+// @grant       GM_deleteValue 
+// @grant       GM_xmlhttpRequest 
+// @grant       GM_registerMenuCommand 
+// @grant       unsafeWindow
 // ==/UserScript==
 
 var meta = uso.metaParse(GM_info.scriptMetaStr);

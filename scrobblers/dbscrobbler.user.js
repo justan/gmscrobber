@@ -6,10 +6,15 @@
 // @include        http://douban.fm/?*
 // @require        https://raw.githubusercontent.com/justan/lrc/master/lrc.js
 // @require        https://raw.githubusercontent.com/justan/gmscrobber/gh-pages/simple_scrobbler_user.js
-// @version        0.2.1
+// @version        0.2.2
 // @uso:script     98833
-// @changelog      firefox 17 支持
 // @initiative     false
+// @grant          GM_getValue
+// @grant          GM_setValue 
+// @grant          GM_deleteValue 
+// @grant          GM_xmlhttpRequest 
+// @grant          GM_registerMenuCommand 
+// @grant          unsafeWindow
 // ==/UserScript==
 
 var meta = uso.metaParse(GM_info.scriptMetaStr);

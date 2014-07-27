@@ -7,7 +7,13 @@
 // @include     http://music.163.com/?*
 // @require     https://raw.github.com/justan/lrc/master/lrc.js
 // @require     http://justan.github.io/gmscrobber/simple_scrobbler_user.js
-// @version     0.1.3
+// @version     0.1.4
+// @grant       GM_getValue
+// @grant       GM_setValue 
+// @grant       GM_deleteValue 
+// @grant       GM_xmlhttpRequest 
+// @grant       GM_registerMenuCommand 
+// @grant       unsafeWindow
 // ==/UserScript==
 
 var scrobbler = new Scrobbler({

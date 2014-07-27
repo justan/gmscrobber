@@ -5,8 +5,14 @@
 // @match       http://fm.qq.com/
 // @match       http://fm.qq.com/?*
 // @require     http://justan.github.io/gmscrobber/simple_scrobbler_user.js
-// @version     0.0.1
+// @version     0.0.2
 // @uso:script  182623
+// @grant       GM_getValue
+// @grant       GM_setValue 
+// @grant       GM_deleteValue 
+// @grant       GM_xmlhttpRequest 
+// @grant       GM_registerMenuCommand 
+// @grant       unsafeWindow
 // ==/UserScript==
 
 var meta = uso.metaParse(GM_info.scriptMetaStr);

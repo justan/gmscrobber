@@ -5,9 +5,15 @@
 // @match       http://play.baidu.com/
 // @match       http://play.baidu.com/?*
 // @require     http://justan.github.io/gmscrobber/simple_scrobbler_user.js
-// @version     0.0.5
+// @version     0.0.6
 // @changelog   update userscript id
 // @uso:script  162278
+// @grant       GM_getValue
+// @grant       GM_setValue 
+// @grant       GM_deleteValue 
+// @grant       GM_xmlhttpRequest 
+// @grant       GM_registerMenuCommand 
+// @grant       unsafeWindow
 // ==/UserScript==
 
 var meta = uso.metaParse(GM_info.scriptMetaStr);

@@ -7,7 +7,13 @@
 // @include     http://www.xiami.com/play*
 // @require     http://justan.github.io/gmscrobber/simple_scrobbler_user.js
 // @updateURL   http://justan.github.io/gmscrobber/GMscrobbler_for_xiami.user.js
-// @version     0.2.1
+// @version     0.2.2
+// @grant       GM_getValue
+// @grant       GM_setValue 
+// @grant       GM_deleteValue 
+// @grant       GM_xmlhttpRequest 
+// @grant       GM_registerMenuCommand 
+// @grant       unsafeWindow
 // ==/UserScript==
 
 var meta = uso.metaParse(GM_info.scriptMetaStr)
