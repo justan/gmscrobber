@@ -14,6 +14,7 @@
 // @grant       GM_xmlhttpRequest 
 // @grant       GM_registerMenuCommand 
 // @grant       unsafeWindow
+// @grant       GM_log
 // ==/UserScript==
 
 var scrobbler = new Scrobbler({
@@ -31,7 +32,7 @@ var scrobbler = new Scrobbler({
           that.song.extra = info;
           if(info.islove === '1') {
             document.querySelector('#g_player .icn-add').click();
-            frames[0].document.querySelector('.ztag>ul>.xtag>.f-cb').click();
+            frames[0].document.querySelector('.xtag').click();
           }
         });
       })
@@ -39,12 +40,12 @@ var scrobbler = new Scrobbler({
     
     //只能添加, 不能删除
     function fav(e) {
-      that.song.extra.islove === '0' || that.love();
+      that.song.extra.islove === '0' && that.love();
     }
     
     document.querySelector('#g_player .icn-add').addEventListener('click', function() {
       setTimeout(function() {
-        var favEl = frames[0].document.querySelector('.ztag>ul>.xtag>.f-cb');
+        var favEl = frames[0].document.querySelector('.xtag');
         favEl.removeEventListener('click', fav);
         favEl.addEventListener('click', fav, false);
       }, 0);
