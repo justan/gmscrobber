@@ -7,7 +7,7 @@
 // @include     http://music.163.com/?*
 // @require     https://raw.github.com/justan/lrc/master/lrc.js
 // @require     http://justan.github.io/gmscrobber/simple_scrobbler_user.js
-// @version     0.1.4
+// @version     0.1.5
 // @grant       GM_getValue
 // @grant       GM_setValue 
 // @grant       GM_deleteValue 
@@ -57,7 +57,7 @@ var getSongInfo = function() {
   var artist = getInfo('#g_player .by');
   return {
     title: getInfo('#g_player .fc1')
-  , artist: artist.replace(/,/g,  /\w/.test(artist) ? ' & ' : '&')
+  , artist: artist.replace(/,|\//g,  /\w/.test(artist) ? ' & ' : '&')
   , album: ''
   , playTime: uso.timeParse(getInfo('#g_player .time em'))
   , duration: uso.timeParse(getInfo('#g_player .time').split('/')[1])
