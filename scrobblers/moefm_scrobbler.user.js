@@ -5,7 +5,7 @@
 // @include     http://moe.fm/listen/*
 // @require     https://raw.github.com/justan/lrc/master/lrc.js
 // @require     http://justan.github.io/gmscrobber/simple_scrobbler_user.js
-// @version     0.1.2
+// @version     0.1.5
 // @run-at      document-end
 // @grant       GM_getValue
 // @grant       GM_setValue 
@@ -31,7 +31,7 @@ var init = function(){
     scrobber.on('nowplaying', function(){
         var loveEle = document.getElementsByClassName('button-love')[0];
         loveEle.addEventListener('click', function(e){
-            if(loveEle.classList.contains('on')){
+            if(!loveEle.classList.contains('on')){
                 scrobber.love();
             }else{
                 scrobber.unlove();
@@ -39,9 +39,14 @@ var init = function(){
         }, false);
         scrobber.getInfo(scrobber.song, function(info){
             document.getElementsByClassName('radio')[0].title = '在 last.fm 中记录: ' + info.len + ' 次';
+            //console.log(info.islove);
             //同步 last.fm 红心歌曲到 萌否电台
-            if(info.islove == '1' && !loveEle.classList.contains('on') || info.islove == '0' && loveEle.classList.contains('on')){
+            if(info.islove == '1' && !loveEle.classList.contains('on') ){
                 document.getElementsByClassName('button-love')[0].click();
+            }
+            //同步 萌否电台 红心歌曲到 last.fm
+            if(info.islove == '0' && loveEle.classList.contains('on') ){
+                scrobber.love();
             }
         });
     });
