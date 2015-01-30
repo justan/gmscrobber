@@ -40,7 +40,7 @@ var init = function(){
         scrobber.getInfo(scrobber.song, function(info){
             document.getElementsByClassName('radio')[0].title = '在 last.fm 中记录: ' + info.len + ' 次';
             //同步 last.fm 红心歌曲到 萌否电台
-            if(info.islove == '1' && loveEle.classList.contains('on') || info.islove == '0' && !loveEle.classList.contains('on')){
+            if(info.islove == '1' && !loveEle.classList.contains('on') || info.islove == '0' && loveEle.classList.contains('on')){
                 document.getElementsByClassName('button-love')[0].click();
             }
         });
