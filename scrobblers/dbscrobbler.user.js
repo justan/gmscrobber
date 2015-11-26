@@ -6,7 +6,7 @@
 // @include        http://douban.fm/?*
 // @require        https://raw.githubusercontent.com/justan/lrc/master/lrc.js
 // @require        https://raw.githubusercontent.com/justan/gmscrobber/gh-pages/simple_scrobbler_user.js
-// @version        0.2.2
+// @version        0.2.3
 // @uso:script     98833
 // @initiative     false
 // @grant          GM_getValue
@@ -14,6 +14,7 @@
 // @grant          GM_deleteValue 
 // @grant          GM_xmlhttpRequest 
 // @grant          GM_registerMenuCommand 
+// @grant          GM_log
 // @grant          unsafeWindow
 // ==/UserScript==
 
@@ -29,7 +30,7 @@ var douban = function(){
 		if(!sc.sk){
 			return;
 		}
-		unsafeWindow.extStatusHandler = function(info){
+		exportFunction(function(info){
 			var song, albuminfo, o = info;
 			log(o);
 			o = JSON.parse(o);
@@ -115,7 +116,7 @@ var douban = function(){
 			
 			return ex.apply(this, arguments);
 			//ex(o);
-		};
+		}, unsafeWindow, {defineAs: 'extStatusHandler'});
 	},
 	sc = new Scrobbler({name: "豆瓣电台", type: 1, ready: ready}),
 	getAlbum = function(info, cb){
@@ -133,9 +134,10 @@ var douban = function(){
 	};
 };
 
-unsafeWindow.Do.ready(function() {
+exportFunction(function() {
 	setTimeout(function(){
 		unsafeWindow.extStatusHandler ? douban() : log("init error");
 	}, 0);
-});
+}, unsafeWindow, {defineAs: '__gmready'});
+unsafeWindow.Do.ready(unsafeWindow.__gmready);
 })();
