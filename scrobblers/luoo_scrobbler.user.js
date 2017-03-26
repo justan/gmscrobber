@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name        落网 scrobbler
-// @namespace   http://gmscrobber.whosemind.net
+// @namespace   crazy
 // @description 记录落网音乐到 last.fm
 // @include     http://www.luoo.net/*
 // @require     http://justan.github.io/gmscrobber/simple_scrobbler_user.js
-// @version     0.1.0
+// @version     20170324
 // @grant       GM_log 
 // @grant       GM_getValue 
 // @grant       GM_setValue
@@ -14,68 +14,56 @@
 // @grant       unsafeWindow 
 // ==/UserScript==
 
-var meta = uso.metaParse(GM_info.scriptMetaStr)
-  , root = unsafeWindow
-  , $ = root.$
-  ;
-
-
-if($.jPlayer) {
-  var scrobbler = new Scrobbler({
-    name: '落网'
-  , ready: function() {
-      var that = this;
+var init = function(){
+      log('init');
+      scrobber.setSongInfoFN(getSongInfo);
+      document.querySelector('.progress').addEventListener('click', function(e){
+        var oldTime = getSongInfo().playTime;
+        setTimeout(function(){
+          var newTime = getSongInfo().playTime;
+          var offset = oldTime - newTime;
+          scrobber.seek(offset);
+        }, 0);
+      }, true);
       
-      $('body').on($.jPlayer.event.playing, function(e) {
-        var song = $.extend({duration: Math.round(e.jPlayer.status.duration)}, e.jPlayer.status.media);
-        
-        that.csa = e.jPlayer.options.cssSelectorAncestor;
-        
-        if(that.state === 'pause'){
-          that.play();
-        }else{
-          setTimeout(function() {
-            that.nowPlaying(song);
-          
-            that.getInfo(song, function(p) {
-              var player = document.querySelector(that.csa)
-                , $loveBtn = $(player.querySelector('.btn-action-like'))
-                ;
-              
-              if(p.islove == '1' && !$loveBtn.hasClass('icon-like-large-actived')) {
-                that.fakeClick = true;
-                $loveBtn.click();
-                that.fakeClick = false;
-              }
-            
-              player.title = song.title + ' 在 last.fm 中记录 ' + p.len + ' 次';
-            })
-          }, 0);
-        }
-      }).on($.jPlayer.event.pause, function(e) {
-        that.pause();
+      scrobber.on('nowplaying', function(){
+        var loveEle = document.querySelector('#playerCt .PLFav');
+        loveEle.addEventListener('click', function(e){
+          var info = getSongInfo();
+          if(!info.isLove){
+            scrobber.love();
+          }else{
+            scrobber.unlove();
+          }
+        }, false);
+        scrobber.getInfo(scrobber.song, function(info){
+          var song = getSongInfo();
+          document.querySelector('.player-large').title = '在 last.fm 中记录: ' + info.len + ' 次';      
+          if(info.islove == '1' && !song.isLove || info.islove == '0' && song.isLove){
+            loveEle.click();
+          }
+        });
       });
-      
-      var favTimer = setInterval(function() {
-        if(that.csa) {
-          //只对播放器主区域的红心按钮有效
-          $('body').on('click', that.csa + ' .btn-action-like', function() {
-            if(that.fakeClick){
-              log('fakeClick');
-              return;
-            }
-            var $el = $(this);
-            setTimeout(function(){
-              if($el.hasClass('icon-like-large-actived')){
-                that.unlove();
-              }else{
-                that.love();
-              }
-            }, 0);
-          });
-          clearInterval(favTimer);
-        }
-      }, 1000);
-    }
-  });
-}
+    };
+    
+    var scrobber = new Scrobbler({
+      name: '落网',
+      ready: init
+    });
+    
+    var getSongInfo = function(){
+      var song = {};
+      var times = document.querySelector('.duration').textContent.replace(/\s+(.*?)\s+/, '$1').split('/');
+      song.title = document.querySelector('.PLTrackname').textContent;
+      song.artist = document.querySelector('.PLArtist').textContent;
+      song.duration = timeParse(times[1]);
+      song.playTime = timeParse(times[0]);
+      song.album = document.querySelector('.PLAlbum').textContent;
+      song.isLove = /icon-faved/.test(document.querySelector('#playerCt .PLFav').className);
+      return song;
+    };
+    
+    var timeParse = function(timeStr){
+      var ts = timeStr.split(':');
+      return ts[0] * 60 + ts[1] * 1;
+    };
