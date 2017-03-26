@@ -13,7 +13,7 @@ var Scrobbler = function(){
 		secret = "cbc5528721f63b839720633d7c1258d2",
 		apiurl = "http://ws.audioscrobbler.com/2.0/",	
 		scrate = .9,
-		tokenreg = /[?&]token=(\w{32})/,
+		tokenreg = /[?&]token=(.+?)(&|#|$)/,
 		_timer, _shift;
     
   /**
