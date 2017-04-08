@@ -4,7 +4,7 @@
 // @description 记录落网音乐到 last.fm
 // @include     http://www.luoo.net/*
 // @require     http://justan.github.io/gmscrobber/simple_scrobbler_user.js
-// @version     0.1.0
+// @version     0.1.1
 // @grant       GM_log 
 // @grant       GM_getValue 
 // @grant       GM_setValue
@@ -31,7 +31,8 @@ if($.jPlayer) {
         
         that.csa = e.jPlayer.options.cssSelectorAncestor;
         
-        if(that.state === 'pause'){
+        if(that.state === 'pause' && song.id === that.song.id){
+          //暂停后重新播放
           that.play();
         }else{
           setTimeout(function() {
