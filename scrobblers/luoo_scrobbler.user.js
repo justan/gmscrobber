@@ -3,7 +3,7 @@
 // @namespace   http://gmscrobber.whosemind.net
 // @description 记录落网音乐到 last.fm
 // @include     http://www.luoo.net/*
-// @require     http://justan.github.io/gmscrobber/simple_scrobbler_user.js
+// @require     https://justan.github.io/gmscrobber/simple_scrobbler_user.js
 // @version     0.1.1
 // @grant       GM_log 
 // @grant       GM_getValue 
