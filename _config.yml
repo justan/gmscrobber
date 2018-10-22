@@ -2,6 +2,7 @@ safe: true
 lsi: false
 pygments: true
 markdown: kramdown
+highlighter: rouge
 
 projectName: Gmscrobber
 projectUrl: https://github.com/justan/gmscrobber
