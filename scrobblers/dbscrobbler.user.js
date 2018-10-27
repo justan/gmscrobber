@@ -2,142 +2,77 @@
 // @name           豆瓣电台dbscrobbler
 // @namespace      http://gmscrobber.whosemind.net
 // @description    记录 douban.fm 到last.fm
-// @include        http://douban.fm/
-// @include        http://douban.fm/?*
+// @include        http://douban.fm/*
+// @include        https://douban.fm/*
 // @require        https://raw.githubusercontent.com/justan/lrc/master/lrc.js
 // @require        https://raw.githubusercontent.com/justan/gmscrobber/gh-pages/simple_scrobbler_user.js
-// @version        0.2.3
+// @version        0.3.0
 // @uso:script     98833
 // @initiative     false
 // @grant          GM_getValue
-// @grant          GM_setValue 
-// @grant          GM_deleteValue 
-// @grant          GM_xmlhttpRequest 
-// @grant          GM_registerMenuCommand 
-// @grant          GM_log
+// @grant          GM_setValue
+// @grant          GM_deleteValue
 // @grant          unsafeWindow
+// @grant          GM_log
+// @grant          GM_xmlhttpRequest
+// @grant          GM_registerMenuCommand
 // ==/UserScript==
 
-var meta = uso.metaParse(GM_info.scriptMetaStr);
-uso.check(meta.version, meta.uso.script);
+var hasStarSync = false
 
-(function(){
-var douban = function(){
-	var ready = function(){
-		var ex = unsafeWindow.extStatusHandler,
-			cmds = {start:"start", end:"e", next:"s", like: "r", unlike: "u", ban: 'b', pause: "pause", gotoplay: "gotoplay"};
-			
-		if(!sc.sk){
-			return;
-		}
-		exportFunction(function(info){
-			var song, albuminfo, o = info;
-			log(o);
-			o = JSON.parse(o);
-			song = o.song || {};
-			
-      albuminfo = song.album;
-			song.album = song.albumtitle;
-			song.duration = song.len || 180;
-			
-			setTimeout(function(){
-				if(song.ssid === null || song.subtype == "T"){
-					log("无效歌曲, 跳过...");
-					return;
-				}
-				var conn = "&";
-				switch(o.type){
-				case cmds.start:
-					if(/\.{3}$/.test(song.album)){
-						if(o.type == cmds.start){
-							//song.album = "";
-							getAlbum(albuminfo, function(at){
-								sc.song.album = at;
-								log("一个省略的专辑名...新的专辑名是: " + at);
-							});
-						}
-					}
-					//song.artist = song.artist.replace(/\s+\/\s+.+$/,"");//多个歌手，就保留第一个
-					//song.artist = song.artist.replace(/\s*[\/\&]\s*/, " & ");
-					
-					song.artist = song.artist.split(/\s*[\/\&\;]\s*/);
-					for(var i = 0, l = song.artist.length; i < l; i++){
-						if(/\w/.test(song.artist)){
-							conn = " & ";//英文名用" & "分割
-							break;
-						}
-					}
-					song.artist = song.artist.join(conn);
-          song._doubanuname = unsafeWindow.$("#fm-user").text();
-					sc.nowPlaying(song);
-					sc.getInfo(song, function(p){
-						log(JSON.stringify(p));
-						if(song.like != p.islove){
-							if(p.islove){
-								log("love " + song.title + "in douban.fm");
-								o.type = cmds.like;
-								ex(JSON.stringify(o));
-								o.type = cmds.start;
-								xhr({
-									method: "GET",
-									url: "http://douban.fm/j/mine/playlist?type=r&sid=" + o.song.sid + "&channel=0",
-									onload: function(data){
-										log("同步红星至豆瓣电台成功");
-									},
-									onerror: function(e){
-										log("同步红星至豆瓣电台失败.. \n" + JSON.stringify(e));
-									}
-								});
-							}
-						}
-						document.getElementById("radioplayer").parentNode.title = "在last.fm中记录 " + p.len + " 次";
-					});
-					break;
-				case cmds.end:
-					sc.scrobble();
-					break;
-				case cmds.like:
-					sc.love();
-					break;
-				case cmds.unlike:
-					sc.unlove();
-					break;
-        case cmds.pause:
-          sc.pause();
-          break;
-        case cmds.gotoplay:
-          sc.play();
-          break;
-				default:
-					break;
-				}
-			
-			}, 0);
-			
-			return ex.apply(this, arguments);
-			//ex(o);
-		}, unsafeWindow, {defineAs: 'extStatusHandler'});
-	},
-	sc = new Scrobbler({name: "豆瓣电台", type: 1, ready: ready}),
-	getAlbum = function(info, cb){
-		var url = "http://api.douban.com/music" + info.replace(/\/$/, '') + "?alt=json";
-		xhr({
-			method: "GET",
-			url: url,
-			onload: function(d){
-				cb(JSON.parse(d.responseText)["title"]["$t"]);
-			},
-			onerror: function(e){
-				log("专辑信息获取失败.. \n" + JSON.stringify(e));
-			}
-		});
-	};
+var scrobber = new Scrobbler({name: "豆瓣电台", ready: function() {
+   this.on('nowplaying', function() {
+      this.getInfo(this.song, function(info) {
+        q('.app').title = '在 last.fm 中记录: ' + info.len + ' 次';
+        var localInfo = getSongInfo()
+        if(info.islove === '1' && !localInfo.isLove || info.islove === '0' && localInfo.isLove) {
+            FindReact(q('.buttons>label')).props.onClick()
+        }
+      });
+
+      hasStarSync || starSync()
+    })
+
+    this.setSongInfoFN(getSongInfo);
+}})
+
+var starSync = function() {
+  q('.buttons>label').addEventListener('click', function() {
+  var info = getSongInfo();
+     if(!info.isLove){
+        scrobber.love();
+     }else{
+        scrobber.unlove();
+      }
+  }, false)
+  hasStarSync = true
+}
+
+var getSongInfo = function() {
+  var currentSong = FindReact(q('.player-wrapper').firstElementChild).props.currentSong.attributes
+  var song = {
+    title: currentSong.title
+  , artist: currentSong.artist
+  , album: currentSong.albumtitle
+  , playTime: currentSong.length - uso.timeParse(q('.time').innerHTML.slice(1))
+  , duration: currentSong.length
+  , isLove: !!currentSong.like
+  }
+  return song
+}
+
+var FindReact = function(dom) {
+    for (var key in dom) {
+        if (key.startsWith("__reactInternalInstance$")) {
+            var compInternals = dom[key]._currentElement;
+            var compWrapper = compInternals._owner;
+            var comp = compWrapper._instance;
+            return comp;
+        }
+    }
+    return null;
 };
 
-exportFunction(function() {
-	setTimeout(function(){
-		unsafeWindow.extStatusHandler ? douban() : log("init error");
-	}, 0);
-}, unsafeWindow, {defineAs: '__gmready'});
-unsafeWindow.Do.ready(unsafeWindow.__gmready);
-})();
+var q = function() {
+  return document.querySelector.apply(document, arguments);
+};
