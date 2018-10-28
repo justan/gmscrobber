@@ -6,7 +6,7 @@
 // @include        https://douban.fm/*
 // @require        https://raw.githubusercontent.com/justan/lrc/master/lrc.js
 // @require        https://raw.githubusercontent.com/justan/gmscrobber/gh-pages/simple_scrobbler_user.js
-// @version        0.3.0
+// @version        0.3.1
 // @uso:script     98833
 // @initiative     false
 // @grant          GM_getValue
@@ -23,7 +23,7 @@ var hasStarSync = false
 var scrobber = new Scrobbler({name: "豆瓣电台", ready: function() {
    this.on('nowplaying', function() {
       this.getInfo(this.song, function(info) {
-        q('.app').title = '在 last.fm 中记录: ' + info.len + ' 次';
+        q('.player-wrapper').title = '在 last.fm 中记录: ' + info.len + ' 次';
         var localInfo = getSongInfo()
         if(info.islove === '1' && !localInfo.isLove || info.islove === '0' && localInfo.isLove) {
             FindReact(q('.buttons>label')).props.onClick()
@@ -56,7 +56,7 @@ var getSongInfo = function() {
   , album: currentSong.albumtitle
   , playTime: currentSong.length - uso.timeParse(q('.time').innerHTML.slice(1))
   , duration: currentSong.length
-  , isLove: !!currentSong.like
+  , isLove: currentSong.like != 0 // like 会有 0 和 '0' 两种取值 
   }
   return song
 }
