@@ -2,12 +2,12 @@
 // @name        网易云音乐 scrobbler
 // @namespace   http://gmscrobber.whosemind.net
 // @description 记录网易云音乐到 last.fm
-// @include     http://music.163.com/#*
-// @include     http://music.163.com/
-// @include     http://music.163.com/?*
+// @include     https://music.163.com/#*
+// @include     https://music.163.com/
+// @include     https://music.163.com/?*
 // @require     https://raw.github.com/justan/lrc/master/lrc.js
 // @require     http://justan.github.io/gmscrobber/simple_scrobbler_user.js
-// @version     0.1.5
+// @version     0.1.6
 // @grant       GM_getValue
 // @grant       GM_setValue 
 // @grant       GM_deleteValue 
