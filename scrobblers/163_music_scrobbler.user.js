@@ -6,7 +6,7 @@
 // @include     https://music.163.com/
 // @include     https://music.163.com/?*
 // @require     https://raw.github.com/justan/lrc/master/lrc.js
-// @require     http://justan.github.io/gmscrobber/simple_scrobbler_user.js
+// @require     https://justan.github.io/gmscrobber/simple_scrobbler_user.js
 // @version     0.1.6
 // @grant       GM_getValue
 // @grant       GM_setValue 
