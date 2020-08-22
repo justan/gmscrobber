@@ -4,9 +4,10 @@
 // @description    记录 douban.fm 到last.fm
 // @include        http://douban.fm/*
 // @include        https://douban.fm/*
+// @include        https://fm.douban.com/*
 // @require        https://raw.githubusercontent.com/justan/lrc/master/lrc.js
 // @require        https://raw.githubusercontent.com/justan/gmscrobber/gh-pages/simple_scrobbler_user.js
-// @version        0.3.1
+// @version        0.3.2
 // @uso:script     98833
 // @initiative     false
 // @grant          GM_getValue
