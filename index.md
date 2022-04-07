@@ -81,7 +81,7 @@ gmscrobber 的目标是提供一种简单的方法来将在线播放的音乐记
     
 ### scrobber 编写示例
 
-  * [怎样记录 QQ 音乐到 last.fm](http://blog.whosemind.net/blog/2012/06/15/zen-yang-ji-lu-qqyin-le-dao-last-dot-fm/)
+  * [怎样记录 QQ 音乐到 last.fm](https://github.com/justan/gmscrobber/wiki/GMscrobber-%E8%84%9A%E6%9C%AC%E7%BC%96%E5%86%99%E7%A4%BA%E4%BE%8B)
 
   
 ## [userscripts.org](https://userscripts.org/) 上的GMscrobber
