@@ -7,7 +7,7 @@
 // @match       https://y.qq.com/portal/player.html
 // @match       https://y.qq.com/portal/player.html?*
 // @require     https://justan.github.io/gmscrobber/simple_scrobbler_user.js
-// @version     0.1.1
+// @version     0.1.2
 // @author      justan
 // @grant       GM_getValue
 // @grant       GM_setValue 
