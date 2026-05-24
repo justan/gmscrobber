@@ -2,8 +2,8 @@
 // @name        QQ音乐 online scrobbler
 // @namespace   http://gmscrobber.whosemind.net
 // @description 记录qq在线音乐到 last.fm
-// @match       https://y.qq.com/n/ryqq/player
-// @match       https://y.qq.com/n/ryqq/player?*
+// @match       https://y.qq.com/n/ryqq_v2/player
+// @match       https://y.qq.com/n/ryqq_v2/player?*
 // @match       https://y.qq.com/portal/player.html
 // @match       https://y.qq.com/portal/player.html?*
 // @require     https://justan.github.io/gmscrobber/simple_scrobbler_user.js
